@@ -9,11 +9,6 @@ import lombok.*;
 
 @Entity
 @Table(name = "schedule_trips")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class ScheduleTrip {
 
     @Id
@@ -47,4 +42,86 @@ public class ScheduleTrip {
     private LocalTime tripTime; // New: Trip Time
     
     private int tripEnd;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Bus getBus() {
+		return bus;
+	}
+
+	public void setBus(Bus bus) {
+		this.bus = bus;
+	}
+
+	public Route getRoute() {
+		return route;
+	}
+
+	public void setRoute(Route route) {
+		this.route = route;
+	}
+
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public int getBookedSeats() {
+		return bookedSeats;
+	}
+
+	public void setBookedSeats(int bookedSeats) {
+		this.bookedSeats = bookedSeats;
+	}
+
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
+	}
+
+	public double getCostPerKm() {
+		return costPerKm;
+	}
+
+	public void setCostPerKm(double costPerKm) {
+		this.costPerKm = costPerKm;
+	}
+
+	public LocalDate getTripDate() {
+		return tripDate;
+	}
+
+	public void setTripDate(LocalDate tripDate) {
+		this.tripDate = tripDate;
+	}
+
+	public LocalTime getTripTime() {
+		return tripTime;
+	}
+
+	public void setTripTime(LocalTime tripTime) {
+		this.tripTime = tripTime;
+	}
+
+	public int getTripEnd() {
+		return tripEnd;
+	}
+
+	public void setTripEnd(int tripEnd) {
+		this.tripEnd = tripEnd;
+	}
+    
+    
 }

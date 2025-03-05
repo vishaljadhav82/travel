@@ -8,9 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
-@Getter
-@ToString
 @Entity
 public class Seat {
 	@Id
@@ -18,5 +15,25 @@ public class Seat {
 	private long id;
 	private int seatNumber;
 	private String stops;
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public int getSeatNumber() {
+		return seatNumber;
+	}
+	public void setSeatNumber(int seatNumber) {
+		this.seatNumber = seatNumber;
+	}
+	public String getStops() {
+		return stops;
+	}
+	public void setStops(String stops) {
+		this.stops = stops;
+	}
+	
+	
 
 }

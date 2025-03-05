@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
+
 public class BookingCriteria {
 
     private String fromLocation; // Source Location
@@ -31,5 +29,39 @@ public class BookingCriteria {
 		return "BookingCriteria [fromLocation=" + fromLocation + ", destinationLocation=" + destinationLocation
 				+ ", passengerId=" + passengerId + ", tripId=" + tripId + "]";
 	}
+
+	public String getFromLocation() {
+		return fromLocation;
+	}
+
+	public void setFromLocation(String fromLocation) {
+		this.fromLocation = fromLocation;
+	}
+
+	public String getDestinationLocation() {
+		return destinationLocation;
+	}
+
+	public void setDestinationLocation(String destinationLocation) {
+		this.destinationLocation = destinationLocation;
+	}
+
+	public Long getPassengerId() {
+		return passengerId;
+	}
+
+	public void setPassengerId(Long passengerId) {
+		this.passengerId = passengerId;
+	}
+
+	public Long getTripId() {
+		return tripId;
+	}
+
+	public void setTripId(Long tripId) {
+		this.tripId = tripId;
+	}
+	
+	
     
 }
