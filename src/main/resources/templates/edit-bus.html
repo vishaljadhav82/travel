@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Bus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-3xl font-bold mb-4">Edit Bus</h1>
+    <!-- Updated background color for better contrast -->
+    <div class="bg-gray-800 w-1/3 p-6 rounded-lg shadow-lg">
+        <form th:action="@{/admin/update/{id}(id=${bus.id})}" method="post">
+            <label class="block mb-2 text-gray-300">Bus Number:</label>
+            <input type="text" name="busNumber" th:value="${bus.busNumber}" class="w-full p-2 mb-4 border border-gray-400 rounded bg-gray-700 text-white">
+
+            <label class="block mb-2 text-gray-300">Driver Name:</label>
+            <input type="text" name="driverName" th:value="${bus.driverName}" class="w-full p-2 mb-4 border border-gray-400 rounded bg-gray-700 text-white">
+
+            <label class="block mb-2 text-gray-300">Capacity:</label>
+            <input type="number" name="capacity" th:value="${bus.capacity}" class="w-full p-2 mb-4 border border-gray-400 rounded bg-gray-700 text-white">
+
+            <button type="submit" class="bg-blue-500 px-4 py-2 rounded text-white hover:bg-blue-600">Update Bus</button>
+        </form>
+    </div>
+</body>
+</html>

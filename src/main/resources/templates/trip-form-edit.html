@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Trip</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-4" th:text="'Edit Trip'"></h2>
+
+        <form th:action="@{/admin/scheduleTrip/update/{id}(id=${trip.id})}" th:object="${trip}" method="post">
+            
+            <!-- Route Select -->
+            <label for="route">Route:</label>
+            <select id="route" th:field="*{route}" class="border p-2 w-full mb-2" onchange="updateRouteDetails()" disabled>
+                <option value="">Select Route</option>
+                <option th:each="r : ${routes}" th:value="${r.id}" th:text="${r.routeName}" th:attr="data-distance=${r.totalDistance}" th:selected="${r.id == trip.route.id}"></option>
+            </select>
+
+            <!-- Bus Select -->
+            <label for="bus">Bus:</label>
+            <select id="bus" th:field="*{bus}" class="border p-2 w-full mb-2" onchange="updateBusDetails()" disabled>
+                <option value="">Select Bus</option>
+                <option th:each="b : ${buses}" th:attr="data-seats=${b.capacity}" th:value="${b.id}" th:text="${b.busNumber}" th:selected="${b.id == trip.bus.id}"></option>
+            </select>
+
+            <!-- Booked Seats -->
+            <label>Booked Seats:</label>
+            <input type="number" th:field="*{bookedSeats}" required class="border p-2 w-full mb-2"  disabled>
+
+            <!-- Available Seats (Editable) -->
+            <label>Available Seats:</label>
+            <input type="number" id="availableSeats" th:field="*{availableSeats}" required class="border p-2 w-full mb-2">
+
+            <!-- Cost Per Km -->
+            <label>Cost Per Km:</label>
+            <input id="distance" type="number" step="0.01" th:field="*{costPerKm}" required class="border p-2 w-full mb-2">
+
+            <!-- Trip Date -->
+            <label for="tripDate">Trip Date:</label>
+            <input type="date" id="tripDate" th:field="*{tripDate}" class="border p-2 w-full mb-2" required>
+
+            <!-- Trip Time -->
+            <label for="tripTime">Trip Time:</label>
+            <input type="time" id="tripTime" th:field="*{tripTime}" class="border p-2 w-full mb-2" required>
+
+            <!-- Trip End (Not Completed / Completed) -->
+            <label>Trip End:</label>
+            <div class="mb-4">
+                <label class="mr-4">
+                    <input type="radio" th:field="*{tripEnd}" value="0" th:checked="${trip.tripEnd == 0}" />
+                    Not Ended
+                </label>
+                <label>
+                    <input type="radio" th:field="*{tripEnd}" value="1" th:checked="${trip.tripEnd == 1}" />
+                    Ended
+                </label>
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save Changes</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to update bus details based on selected bus
+        function updateBusDetails() {
+            const selectElement = document.getElementById("bus");
+            const selectedOption = selectElement.options[selectElement.selectedIndex];
+            const totalSeats = selectedOption.getAttribute("data-seats");
+            document.getElementById("availableSeats").value = totalSeats;
+        }
+    </script>
+</body>
+</html>

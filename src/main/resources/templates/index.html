@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #acb6e5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            width: 1700px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .welcome-container {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.5s ease;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button-container a {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sign-up-button {
+            background: linear-gradient(to right, #56ab2f, #a8e063);
+            color: white;
+        }
+
+        .log-in-button {
+            background: linear-gradient(to right, #4c9aff, #6c7de8);
+            color: white;
+        }
+
+        .button-container a:hover {
+            transform: scale(1.1);
+        }
+
+        .back-link {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 16px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+
+        .back-link:hover {
+            color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Logo -->
+    <div class="logo-container">
+        <svg width="1700" height="200" viewBox="0 0 1700 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Gradient -->
+            <defs>
+                <linearGradient id="bgGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#007bff"/>
+                    <stop offset="100%" stop-color="#00c6ff"/>
+                </linearGradient>
+            </defs>
+            
+            <!-- Background Shape -->
+            <rect width="1700" height="200" fill="url(#bgGradient)" rx="20"/>
+
+            <!-- Bus Icon -->
+            <rect x="200" y="70" width="160" height="60" rx="10" fill="white" stroke="black" stroke-width="2"/>
+            <circle cx="220" cy="140" r="10" fill="black"/>
+            <circle cx="340" cy="140" r="10" fill="black"/>
+            <rect x="215" y="80" width="50" height="30" fill="black"/>
+            <rect x="280" y="80" width="50" height="30" fill="black"/>
+
+            <!-- Waves -->
+            <path d="M0 170 C200 130, 400 210, 600 170 C800 130, 1000 210, 1200 170 C1400 130, 1600 210, 1700 170 V200 H0 Z" fill="white" opacity="0.3"/>
+
+            <!-- Sun -->
+            <circle cx="100" cy="50" r="30" fill="yellow" stroke="orange" stroke-width="4"/>
+
+            <!-- Travel Agency Text -->
+            <text x="400" y="120" font-family="Arial, sans-serif" font-size="80" fill="white" font-weight="bold">
+                Explore World Travels
+            </text>
+            
+            <!-- Tagline -->
+            <text x="410" y="160" font-family="Arial, sans-serif" font-size="30" fill="white" font-style="italic">
+                "Your journey, our passion"
+            </text>
+        </svg>
+    </div>
+
+    <div class="welcome-container" id="welcome-container">
+        <h1>Welcome to Our Travel App</h1>
+        <p>Please choose an option to proceed:</p>
+        
+        <div class="button-container">
+            <a href="/public/signup" class="sign-up-button" id="signUpButton">Sign Up</a>
+        </div>
+        
+                    <a href="/public/login" class="log-in-button" id="logInButton">Log In</a>
+       
+    </div>
+
+    <a href="/" class="back-link" id="back-link">Back to Home</a>
+
+    <script>
+        // GSAP Animation for the Welcome Container
+        gsap.to("#welcome-container", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        // GSAP Animation for Back Link
+        gsap.to("#back-link", {
+            opacity: 1,
+            y: 0,
+            delay: 0.5,
+            duration: 0.8,
+            ease: "power3.out"
+        });
+
+        // GSAP Animation for Buttons
+        gsap.from(".button-container a", {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            stagger: 0.3,
+            ease: "power3.out"
+        });
+    </script>
+</body>
+</html>

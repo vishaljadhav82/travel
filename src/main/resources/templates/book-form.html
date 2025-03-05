@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Book a Trip</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <script>
+        let bookingId_;
+        let statusCode;
+
+        function showAllFromLocationOptions() {
+            var selectElement = document.getElementById("fromLocation");
+            var selectedValue = selectElement.value;
+            var options = selectElement.options;
+            let index;
+            let slicedStops = [];
+
+            for (var i = 0; i < options.length; i++) {
+                if (selectedValue === options[i].value) {
+                    index = i;
+                }
+            }
+
+            var stopElements = document.querySelectorAll('#fromLocation option');
+            slicedStops = Array.from(stopElements).slice(index + 1);
+
+            var destinationSelect = document.getElementById("destinationLocation");
+            destinationSelect.innerHTML = "<option value=''>Select Destination Location</option>";
+            destinationSelect.disabled = false;
+
+            slicedStops.forEach(function(stop) {
+                var newOption = document.createElement("option");
+                newOption.value = stop.value;
+                newOption.textContent = stop.textContent;
+                destinationSelect.appendChild(newOption);
+            });
+        }
+
+        function submitBooking() {
+            document.getElementById("loader").classList.remove("hidden");
+            
+            var bookingData = {
+                fromLocation: document.getElementById("fromLocation").value,
+                destinationLocation: document.getElementById("destinationLocation").value,
+                passengerId: document.getElementById("passengerId").value,
+                tripId: document.getElementById("tripId").value
+            };
+
+            fetch('http://localhost:8080/user/booking/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("loader").classList.add("hidden");
+                console.log("Booking Details:", data);
+                bookingId_ = data.id;
+                alert(bookingId_);
+                
+                var options = {
+                    "key": "rzp_test_NZIp88tQpFKRfm",
+                    "amount": data.rupeesPaid * 100,
+                    "currency": "INR",
+                    "name": "Trip Booking Service",
+                    "description": "Trip Payment",
+                    "order_id": data.transactionId,
+                    "receipt": data.passenger.email,
+                    "callback_url": "http://localhost:8080/public/handle-payment-callback",
+                    "handler": function (response) {
+                    	
+                        var paymentDetails = {
+                            bookingId: bookingId_,
+                            orderId: response.razorpay_order_id,
+                            paymentId: response.razorpay_payment_id,
+                            signatureId: response.razorpay_signature
+                        };
+
+                        // Create a popup for payment details
+                        createPaymentPopup(paymentDetails);
+
+                        // Call the function to handle backend request
+                        processPaymentResponse(paymentDetails);
+
+                        console.log("Payment Success:", response);
+                    },
+                    "prefill": {
+                        "name": data.passenger.firstName + " " + data.passenger.lastName,
+                        "email": data.passenger.email,
+                        "contact": data.passenger.phoneNumber
+                    },
+                    "theme": {
+                        "color": "#3399cc"
+                    }
+                };
+
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            	
+            })
+            .catch(error => {
+                document.getElementById("loader").classList.add("hidden");
+                console.error("Error:", error);
+                alert(error)
+            });
+        }
+
+        function createPaymentPopup(paymentDetails) {
+            // Hide the form
+            document.getElementById("bookingForm").style.display = "none";
+
+            // Create a div for the popup
+            const popup = document.createElement('div');
+            popup.style.position = 'fixed';
+            popup.style.top = '0';
+            popup.style.left = '0';
+            popup.style.width = '100vw';
+            popup.style.height = '100vh';
+            popup.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Dark overlay effect
+            popup.style.display = 'flex';
+            popup.style.justifyContent = 'center';
+            popup.style.alignItems = 'center';
+            popup.style.zIndex = '1000';
+
+            // Create a container for the popup content
+            const popupContent = document.createElement('div');
+            popupContent.style.backgroundColor = '#fff';
+            popupContent.style.padding = '20px';
+            popupContent.style.borderRadius = '10px';
+            popupContent.style.boxShadow = '0px 4px 6px rgba(0, 0, 0, 0.1)';
+            popupContent.style.width = '400px';
+            popupContent.style.textAlign = 'center';
+
+            popupContent.innerHTML = `
+                <h2 class="text-xl font-bold mb-4">Payment Details</h2>
+                <p><strong>Booking ID:</strong> ${paymentDetails.bookingId}</p>
+                <p><strong>Order ID:</strong> ${paymentDetails.orderId}</p>
+                <p><strong>Payment ID:</strong> ${paymentDetails.paymentId}</p>
+                <p><strong>Signature ID:</strong> ${paymentDetails.signatureId}</p>
+                <a href="/user/booking/my-bookings" class="text-blue-500 underline block mt-4">See Your Bookings</a>
+                <button id="closePopup" class="mt-4 bg-red-500 text-white px-4 py-2 rounded">Close</button>
+            `;
+
+            // Append content to the popup
+            popup.appendChild(popupContent);
+            document.body.appendChild(popup);
+
+            // Close button functionality
+            document.getElementById('closePopup').addEventListener('click', function() {
+                document.body.removeChild(popup);
+                document.getElementById("bookingForm").style.display = "block"; // Show form again
+            });
+        }
+
+        // Separate function to handle backend request
+        function processPaymentResponse(paymentResponse) {
+            fetch('http://localhost:8080/user/booking/handle-payment-callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentResponse)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Payment Response Saved:", data);
+                window.location.href = "http://localhost:8080/public/search";
+            })
+            .catch(error => {
+                console.error("Error saving payment response:", error);
+            });
+        }
+    </script>
+</head>
+<body class="bg-gray-100 p-6">
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg relative">
+        <h2 class="text-2xl font-bold mb-4">Book a Trip</h2>
+
+        <div id="loader" class="hidden absolute inset-0 flex justify-center items-center bg-white bg-opacity-75">
+            <div class="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+
+        <form id="bookingForm">
+            <input type="hidden" id="tripId" name="tripId" th:value="${tripId}">
+
+            <div class="mb-4">
+                <label for="fromLocation" class="block text-lg font-medium text-gray-700">From Location</label>
+                <select id="fromLocation" name="fromLocation" class="w-full p-2 border border-gray-300 rounded" required onchange="showAllFromLocationOptions()">
+                    <option value="">Select From Location</option>
+                    <th:block th:each="stop : ${stops}">
+                        <option th:value="${stop.stopName}" th:text="${stop.stopName}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="destinationLocation" class="block text-lg font-medium text-gray-700">Destination Location</label>
+                <select id="destinationLocation" name="destinationLocation" class="w-full p-2 border border-gray-300 rounded" required disabled>
+                    <option value="">Select Destination Location</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="passengerId" class="block text-lg font-medium text-gray-700">Passenger</label>
+                <select id="passengerId" name="passengerId" class="w-full p-2 border border-gray-300 rounded" required>
+                    <option value="">Select Passenger</option>
+                    <th:block th:each="passenger : ${passenger}">
+                        <option th:value="${passenger.id}" th:text="${passenger.firstName}"></option>
+                    </th:block>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <button type="button" class="bg-blue-500 text-white px-6 py-2 rounded" onclick="submitBooking()">Book Trip</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

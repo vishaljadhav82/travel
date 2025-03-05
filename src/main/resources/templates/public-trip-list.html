@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Scheduled Trips</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Scheduled Trips</h2>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div th:each="trip : ${trips}" class="bg-white rounded-lg shadow-lg p-6 transition-all duration-300 hover:shadow-xl">
+                <!-- Title with route name and available seats -->
+                <h3 class="text-xl text-red-800">
+                    <span th:if="${trip.tripEnd == 1}">Completed Trip</span>
+                </h3>
+                <h3 class="text-xl font-semibold mb-2 text-gray-800">
+                    <span th:text="${trip.route.routeName}"></span>
+                    <span class="ml-2 text-green-500" th:text="${trip.availableSeats} + ' Seats Available'"></span>
+                </h3>
+                
+                <!-- Trip Information -->
+                <p class="text-gray-600 mb-2"><strong>Route:</strong> <span th:text="${trip.route.routeName}"></span></p>
+                <p class="text-gray-600 mb-2"><strong>Total Distance:</strong> <span th:text="${trip.route.totalDistance} + ' Km'"></span></p>
+                <p class="text-gray-600 mb-2"><strong>Trip Date:</strong> <span th:text="${trip.tripDate}"></span></p>
+                <p class="text-gray-600 mb-4"><strong>Trip Time:</strong> <span th:text="${trip.tripTime}"></span></p>
+
+                <!-- Book Button -->
+                <div th:if="${trip.tripEnd == 0}">
+                <a th:href="@{/user/booking/book/{id}(id=${trip.id})}" class="bg-green-500 text-white px-4 py-2 rounded block text-center hover:bg-green-600 transition-all duration-200">
+                    Book Now
+                </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

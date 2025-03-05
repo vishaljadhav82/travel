@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Travel Management Flowchart</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'light' });
+    </script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            max-width: 950px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            box-shadow: 0px 12px 24px rgba(210, 159, 159, 0.25);
+            border-radius: 16px;
+            animation: fadeIn 1s ease-in-out;
+            backdrop-filter: blur(10px);
+        }
+        h2 {
+            color: #3708f1;
+            font-size: 24px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            background:linear-gradient(#491fed,#8469ef);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 8px 16px rgba(248, 245, 245, 0.2);
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Bus Travel Management Web App Flowchart</h2>
+        <div class="mermaid">
+            graph TD;
+                A[Bus Travel Management] -->|Admin Added Manuaal| B[Admin Added Manually];
+                B --> C[Admin Has USER and ADMIN Role];
+                C --> D[Admin Manages Buses];
+                C --> E[Admin Schedules Trips];
+                A -->|User Registers| F[USER Added with USER Role];
+                F --> G[User Searches Trips];
+                G --> H[User Selects From & To];
+                H --> I[User Books Trip];
+                I --> J[User Views Bookings];
+                J --> K[User Downloads Trip Details as PNG];
+                D --> L[View Scheduled Trip Details];
+                E --> L;
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+        }
+        .card {
+            background: #fff;
+            color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            width: 350px; /* Card width */
+            margin: 30px;
+            text-align: left;
+            display: inline-block;
+            text-transform: capitalize;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
+        }
+        .card h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .card p {
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+        .card p strong {
+            font-weight: 600;
+            color: #007bff;
+        }
+        .card .card-header {
+    background: linear-gradient(to right, #007bff, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+    font-size: 1.3em;
+}
+
+        .download-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+        .download-btn:hover {
+            background: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        /* Watermark Styling */
+        .watermark {
+            position: absolute;
+            bottom: 40%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 30px;
+            color: rgba(0, 0, 0, 0.1); /* Light transparent */
+            font-weight: bold;
+            pointer-events: none;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .card {
+                width: 90%;
+                margin: 15px 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+            .card {
+                width: 95%;
+                margin: 10px 0;
+            }
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>My Bookings</h2>
+        <div th:each="booking : ${bookings}" class="card" th:id="'booking-card-' + ${booking.id}">
+            <div class="card-header">
+                <h3>Explore World Travels</h3>
+            </div>
+            <p><strong>Booking ID:</strong> <span th:text="${booking.id}"></span></p>
+            <p><strong>Departure Location:</strong> <span th:text="${booking.fromLocation}"></span></p>
+            <p><strong>Destination Location:</strong> <span th:text="${booking.destinationLocation}"></span></p>
+            <p><strong>Departure Date:</strong> <span th:text="${booking.trip.tripDate}"></span></p>
+            <p><strong>Departure Time:</strong> <span th:text="${booking.trip.tripTime}"></span></p>
+            <p><strong>Bus Number:</strong> <span th:text="${booking.trip.bus.busNumber}"></span></p>
+            <p><strong>Route Name:</strong> <span th:text="${booking.trip.route.routeName}"></span></p>
+            <p><strong>Total Distance:</strong> <span th:text="${booking.totalDistance}"></span> km</p>
+            <p><strong>Amount Paid:</strong> ₹<span th:text="${booking.rupeesPaid}"></span></p>
+            <p><strong>Status:</strong> <span th:if="${booking.status == 'COMPLETED'}" th:text="PAID"></span> <span th:if="${booking.status == 'created'}" th:text="Pending"></span></p>
+
+            <!-- Watermark inside the card -->
+            <div class="watermark">Explore World Travels</div>
+
+            <button class="download-btn" th:attr="data-id=${booking.id}" onclick="downloadBooking(this)">Download as PNG</button>
+        </div>
+    </div>
+
+    <script>
+        function downloadBooking(button) {
+            let bookingId = button.getAttribute("data-id");
+            let card = document.getElementById(`booking-card-${bookingId}`);
+
+            // Hide the button before capturing the image
+            button.classList.add("hidden");
+
+            html2canvas(card, { scale: 2, useCORS: true }).then(canvas => {
+                let link = document.createElement("a");
+                link.download = `Booking_${bookingId}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+
+                // Show the button again
+                button.classList.remove("hidden");
+            });
+        }
+    </script>
+
+</body>
+</html>

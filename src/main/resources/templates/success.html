@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Booking Success</title>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@0.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .content {
+            text-align: center;
+            padding: 40px;
+        }
+        .svg-logo {
+            width: 1700px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+        .details {
+            margin-top: 30px;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .details th, .details td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .download-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .download-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content" id="content">
+        <!-- SVG Logo -->
+        <svg class="svg-logo" width="1700" height="200" viewBox="0 0 1700 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Gradient -->
+            <defs>
+                <linearGradient id="bgGradient" x1="0%" y1="50%" x2="100%" y2="50%">
+                    <stop offset="0%" stop-color="#007bff"/>
+                    <stop offset="100%" stop-color="#00c6ff"/>
+                </linearGradient>
+            </defs>
+            
+            <!-- Background Shape -->
+            <rect width="1700" height="200" fill="url(#bgGradient)" rx="20"/>
+        
+            <!-- Bus Icon -->
+            <rect x="200" y="70" width="160" height="60" rx="10" fill="white" stroke="black" stroke-width="2"/>
+            <circle cx="220" cy="140" r="10" fill="black"/>
+            <circle cx="340" cy="140" r="10" fill="black"/>
+            <rect x="215" y="80" width="50" height="30" fill="black"/>
+            <rect x="280" y="80" width="50" height="30" fill="black"/>
+        
+            <!-- Waves -->
+            <path d="M0 170 C200 130, 400 210, 600 170 C800 130, 1000 210, 1200 170 C1400 130, 1600 210, 1700 170 V200 H0 Z" fill="white" opacity="0.3"/>
+        
+            <!-- Sun -->
+            <circle cx="100" cy="50" r="30" fill="yellow" stroke="orange" stroke-width="4"/>
+        
+            <!-- Travel Agency Text -->
+            <text x="400" y="120" font-family="Arial, sans-serif" font-size="80" fill="white" font-weight="bold">
+                Explore World Travels
+            </text>
+            
+            <!-- Tagline -->
+            <text x="410" y="160" font-family="Arial, sans-serif" font-size="30" fill="white" font-style="italic">
+                "Your journey, our passion"
+            </text>
+        </svg>
+
+        <h1>Booking Success!</h1>
+        <p>Your booking has been confirmed. Below are your booking details:</p>
+
+        <div class="details">
+            <table>
+                <tr>
+                    <th>Booking ID</th>
+                    <td th:text="${booking.bookingId}"></td>
+                </tr>
+                <tr>
+                    <th>Passenger Name</th>
+                    <td th:text="${booking.passenger.firstName} + ' ' + ${booking.passenger.lastName}"></td>
+                </tr>
+                <tr>
+                    <th>From Location</th>
+                    <td th:text="${booking.fromLocation}"></td>
+                </tr>
+                <tr>
+                    <th>Destination Location</th>
+                    <td th:text="${booking.destinationLocation}"></td>
+                </tr>
+                <tr>
+                    <th>Trip Date</th>
+                    <td th:text="${trip.tripDate}"></td>
+                </tr>
+                <tr>
+                    <th>Trip Time</th>
+                    <td th:text="${trip.tripTime}"></td>
+                </tr>
+                <tr>
+                    <th>Total Distance</th>
+                    <td th:text="${booking.totalDistance}"></td>
+                </tr>
+                <tr>
+                    <th>Total Amount</th>
+                    <td th:text="${booking.rupeesPaid}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <button class="download-btn" onclick="downloadAsImage()">Download as PNG</button>
+    </div>
+
+    <script>
+        function downloadAsImage() {
+            html2canvas(document.getElementById('content')).then(function(canvas) {
+                var link = document.createElement('a');
+                link.href = canvas.toDataURL('image/png');
+                link.download = 'booking_success.png';
+                link.click();
+            });
+        }
+    </script>
+
+</body>
+</html>
