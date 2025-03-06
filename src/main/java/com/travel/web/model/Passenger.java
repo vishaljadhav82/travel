@@ -37,4 +37,6 @@ public class Passenger {
 
     @Column(name = "age", nullable = false)
     private int age;
+    
+    
 }
