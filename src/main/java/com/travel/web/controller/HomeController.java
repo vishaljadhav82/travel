@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.travel.web.config.Role;
+import com.travel.web.model.Booking;
 import com.travel.web.model.ScheduleTrip;
 import com.travel.web.model.Stop;
 import com.travel.web.model.TripSearchCriteria;
@@ -54,13 +56,13 @@ public class HomeController {
         model.addAttribute("allStops", allStops);
         List<ScheduleTrip> trips = scheduleTripService.searchTrips(LocalDate.now(), "Sonari", "Anala");
         trips.forEach(e -> System.out.println(e));
-        return "trip-search";
+        return "public/t-search";
     }
 
     @GetMapping("/login")
     public String loginPage() {
 
-        return "login"; // Renders login.html from templates folder
+        return "public/login"; // Renders login.html from templates folder
     }
 
     @GetMapping("/signup")
@@ -71,7 +73,7 @@ public class HomeController {
     @PostMapping("/register")
     public String registerUser(@ModelAttribute User user, BindingResult result) {
         if (result.hasErrors()) {
-            return "user-form";
+            return "public/user-form";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword())); // Encrypt password
         user.setRole(Role.USER); // Set default role
@@ -82,7 +84,7 @@ public class HomeController {
     @PostMapping("/search")
     public String listTrips(Model model, @ModelAttribute TripSearchCriteria tripSearchCriteria, BindingResult result) {
         if (result.hasErrors()) {
-            return "trip-search";
+            return "public/t-search";
         }
         System.out.println(tripSearchCriteria); // For debugging, check the values passed
 
@@ -96,7 +98,7 @@ public class HomeController {
         trips.forEach(e -> System.out.println(e.getRoute().getRouteName()));
 
         model.addAttribute("trips", trips);
-        return "public-trip-list"; // Return the name of the view (Thymeleaf template)
+        return "public/public-trip-list"; // Return the name of the view (Thymeleaf template)
     }
     
     @ExceptionHandler(Exception.class)
@@ -108,6 +110,12 @@ public class HomeController {
     
     @GetMapping("/about-us")
     public String aboutUs() {
-    	return "about-us";
+    	return "public/about-us";
+    }
+    @GetMapping("/testing")
+    @ResponseBody
+    public List<Booking> test() {
+    List<Booking> bookings =	bookingService.findAllByUsername("admin");
+    	return bookings;
     }
 }

@@ -59,7 +59,7 @@ public class BookingController {
         model.addAttribute("stops", stops);
         model.addAttribute("passenger", passenger);
         model.addAttribute("tripId", tripId);
-                return "book-form";  // The name of your Thymeleaf HTML file
+                return "book/book-form";  // The name of your Thymeleaf HTML file
     }
 
     @PostMapping(value="/save",produces = "application/json")
@@ -137,7 +137,7 @@ public class BookingController {
         model.addAttribute("booking", booking);
         model.addAttribute("trip", scheduleTrip);
         System.out.println("Upadetd");
-        return "success";  // The success page after payment
+        return "book/success";  // The success page after payment
     }
     
     @GetMapping("/my-bookings")
@@ -155,7 +155,7 @@ public class BookingController {
      List<Booking> sortedTime = bookings.stream().sorted(new TimeComparator()).toList();
 
      model.addAttribute("bookings", sortedTime);
-     return "booking-list";
+     return "book/booking-list";
     }
     
 

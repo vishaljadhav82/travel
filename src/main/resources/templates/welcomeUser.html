@@ -114,7 +114,7 @@ body {
 
 /* Footer Styles */
 .footer {
-    position: fixed;
+    position: relative;
     bottom: 0;
     width: 100%;
     text-align: center;
@@ -190,32 +190,31 @@ body {
 </head>
 <body>
 
-    <!-- नेव्हबार सेक्शन -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
-        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+       <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">TravelWith</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                    <a class="nav-link" href="/user/passengers">Passangers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                    <a class="nav-link" href="/public/search">Trip Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                    <a class="nav-link" href="/public/signup">Sign up with new accounts</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                    <a class="nav-link" href="/public/login">Log in another account</a>
                 </li>
                 <li class="nav-item">
                     <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                        <button type="submit" class="btn btn-danger">Log out</button>
                     </form>
                 </li>
             </ul>
@@ -228,53 +227,53 @@ body {
             <!-- कार्ड 1 -->
             <div class="col">
                 <div class="glass-card">
-                    <h2>प्रवासी पहा</h2>
-                    <p>तुमच्या सर्व प्रवासांची यादी तपासा.</p>
-                    <a href="/user/passengers">जाऊन पहा</a>
+                    <h2>See Passangers</h2>
+                    <p>See your all passangers list.</p>
+                    <a href="/user/passengers">Click here</a>
                 </div>
             </div>
 
             <!-- कार्ड 2 -->
             <div class="col">
                 <div class="glass-card">
-                    <h2>प्रवासी जोडा</h2>
-                    <p>तुमच्या ट्रिपसाठी नवीन प्रवासी नोंदवा.</p>
-                    <a href="/user/passengers/form">जाऊन जोडा</a>
+                    <h2>Add Passanger</h2>
+                    <p>For next trip add new Passanger.</p>
+                    <a href="/user/passengers/form">Click here</a>
                 </div>
             </div>
 
             <!-- कार्ड 3 -->
             <div class="col">
                 <div class="glass-card">
-                    <h2>तुमच्या बुकिंग्स पहा</h2>
-                    <p>तुमच्या अलीकडील बुकिंग्स पहा.</p>
-                    <a href="/user/booking/my-bookings">जाऊन पहा</a>
+                    <h2>Bookings</h2>
+                    <p>See your recent booking history.</p>
+                    <a href="/user/booking/my-bookings">Click here</a>
                 </div>
             </div>
 
             <!-- कार्ड 4 -->
             <div class="col">
                 <div class="glass-card">
-                    <h2>ट्रिप शोधा</h2>
-                    <p>उपलब्ध सर्वोत्तम प्रवास पर्याय शोधा.</p>
-                    <a href="/public/search">जाऊन शोधा</a>
+                    <h2>Search</h2>
+                    <p>Search Avialable trips.</p>
+                    <a href="/public/search">Click here</a>
                 </div>
             </div>
 
             <!-- कार्ड 5 -->
             <div class="col">
                 <div class="glass-card">
-                    <h2>साइन अप करा</h2>
-                    <p>तुमचा प्रवास सुरू करण्यासाठी खाते तयार करा.</p>
-                    <a href="/public/signup">जाऊन साइन अप करा</a>
+                    <h2>Create Account</h2>
+                    <p>Create another new account</p>
+                    <a href="/public/signup">Create account</a>
                 </div>
             </div>
 
             <!-- कार्ड 6 -->
             <div class="col">
                 <div class="glass-card">
-                    <h2>लॉगिन करा</h2>
-                    <p>तुमच्या खात्यात प्रवेश करा आणि वैयक्तिक सेवा वापरा.</p>
+                    <h2>Log in</h2>
+                    <p>Log in another account</p>
                     <a href="/public/login">जाऊन लॉगिन करा</a>
                 </div>
             </div>
@@ -283,7 +282,7 @@ body {
 
     <!-- युजर रेटिंग कॅरोसेल सेक्शन -->
     <section class="container my-5 section-background">
-        <h2 class="text-center">आम्ही वापरकर्त्यांनी काय सांगितले</h2>
+        <h2 class="text-center">Reviews</h2>
         <div id="ratingCarousel" class="carousel slide rating-carousel" data-bs-ride="carousel">
             <div class="carousel-inner">
             <!-- Rating Item 1 -->
@@ -449,11 +448,11 @@ body {
                 <!-- आणखी रेटिंग्ज (20 पर्यंत) जोडता येतील -->
             <button class="carousel-control-prev" type="button" data-bs-target="#ratingCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">पूर्वी</span>
+                <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#ratingCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">नंतर</span>
+                <span class="visually-hidden">Next</span>
             </button>
         </div>
     </section>
@@ -461,16 +460,17 @@ body {
     <!-- संपर्क सेक्शन -->
     <section class="contact-section m-1">
         <div class="container section-background-white">
-            <h2>आमच्याशी संपर्क साधा</h2>
-            <p>तुम्हाला काही प्रश्न असतील किंवा मदतीची आवश्यकता असेल, तर कृपया आमच्याशी संपर्क साधा!</p>
+            <h2>Contact us</h2>
+            <p>If you have any queyries contact us</p>
         </div>
     </section>
 
+    <section>
     <!-- पाय footer सेक्शन -->
-    <footer class="footer">
-        <p>© 2025 तुमचे कंपनी नाव</p>
+    <footer class="footer" style="margin-top:20px;">
+        <p>© 2025 TravelWith</p>
     </footer>
-
+    </section>
     <!-- बूटस्ट्रॅप JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

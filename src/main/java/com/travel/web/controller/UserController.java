@@ -36,13 +36,13 @@ public class UserController {
     public String listPassengers(Model model) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("passengers", passengerService.getAllPassengersByUsername(auth.getName()));
-        return "passanger-list";
+        return "passenger/passanger-list";
     }
 
     @GetMapping("/passengers/form")
     public String showPassengerForm(Model model) {
         model.addAttribute("passenger", new Passenger());
-        return "passanger-form";
+        return "passenger/passanger-form";
     }
 
     @PostMapping("/passengers/save")
@@ -65,7 +65,7 @@ public class UserController {
     @GetMapping("/edit/{id}")
     public String editPassenger(@ModelAttribute User user, Model model) {
         model.addAttribute("passenger", passengerService.getPassengerById(user.getId()));
-        return "passenger-form";
+        return "passenger/passenger-form";
     }
 
     @GetMapping("/delete/{id}")

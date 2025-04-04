@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Stops</title>
+</head>
+<body>
+    <h1 th:text="'Stops for Route: ' + ${route.routeName}"></h1>
+    
+    <form th:action="@{|/routes/${route.id}/stops|}" method="post" th:object="${stop}">
+        <input type="text" th:field="*{stopName}" placeholder="Stop Name" required/>
+        <input type="number" step="0.1" th:field="*{distanceFromSource}" placeholder="Distance from Source (km)" required/>
+        <button type="submit">Add Stop</button>
+    </form>
+
+    <table border="1">
+        <tr>
+            <th>Stop Name</th>
+            <th>Distance from Source</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="s : ${stops}">
+            <td th:text="${s.stopName}"></td>
+            <td th:text="${s.distanceFromSource}"></td>
+            <td>
+                <a th:href="@{|/routes/${route.id}/stops/delete/${s.id}|}" onclick="return confirm('Delete this stop?')">Delete</a>
+            </td>
+        </tr>
+    </table>
+
+    <a th:href="@{/routes}">Back to Routes</a>
+</body>
+</html>

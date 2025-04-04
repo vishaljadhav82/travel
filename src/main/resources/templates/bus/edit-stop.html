@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add Stop</title>
+    <title>Edit Stop</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -93,30 +93,30 @@
 <body>
  <!-- नेव्हबार सेक्शन -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
-        <a class="navbar-brand" href="/user">मुखपृष्ठ</a>
+        <a class="navbar-brand" href="/user">Home</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers">प्रवासी</a>
+                    <a class="nav-link" href="/user/passengers">Passangers</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers/form">प्रवासी जोडा</a>
+                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/public/search">ट्रिप शोधा</a>
+                    <a class="nav-link" href="/public/search">Trip Search</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/public/signup">साइन अप करा</a>
+                    <a class="nav-link" href="/public/signup">Sign up</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/public/login">लॉगिन करा</a>
+                    <a class="nav-link" href="/public/login">Log in</a>
                 </li>
                 <li class="nav-item">
                     <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">लॉगआउट करा</button>
+                        <button type="submit" class="btn btn-danger">Log out</button>
                     </form>
                 </li>
             </ul>
@@ -124,27 +124,29 @@
     </nav>
 
     <div class="form-container" id="form-container">
-        <h2>Add a New Stop</h2>
-        <form th:action="@{/admin/stops/save}" method="post" th:object="${stop}">
-            <label>Stop Name:</label>
-            <input type="text" th:field="*{stopName}" required><br>
+        <h2>Edit Stop</h2>
+        <form th:action="@{/admin/stops/edit/save/{stopId}(stopId=${stop.id})}" method="post" th:object="${stop}">
+            <label for="stopName">Stop Name:</label>
+            <!-- Pre-fill with stop name -->
+            <input type="text" th:field="*{stopName}" value="${stop.stopName}" required><br>
 
-            <label>Distance from Start (km):</label>
-            <input type="number" th:field="*{distanceFromStart}" step="0.1" required><br>
+            <label for="distanceFromStart">Distance from Start (km):</label>
+            <!-- Pre-fill with distance -->
+            <input type="number" th:field="*{distanceFromStart}" step="0.1" value="${stop.distanceFromStart}" required><br>
 
-            <label>Stop Time (minutes):</label>
-            <input type="number" th:field="*{stopTime}" required><br>
+            <label for="stopTime">Stop Time (minutes):</label>
+            <!-- Pre-fill with stop time -->
+            <input type="number" th:field="*{stopTime}" value="${stop.stopTime}" required><br>
 
-            <label>Select Route:</label>
+            <label for="route">Select Route:</label>
             <select th:field="*{route}">
                 <option th:each="route : ${routes}" th:value="${route.id}" th:text="${route.routeName}"></option>
             </select><br>
 
-            <button type="submit">Save</button>
+            <button type="submit">Save Changes</button>
         </form>
 
-        <!-- Using JavaScript to go back to the previous page -->
-        <a href="javascript:void(0);" class="back-link" onclick="window.history.back()">Back to Stops</a>
+        <a href="/admin/stops" class="back-link" id="back-link">Back to Stops</a>
     </div>
 
     <script>
@@ -157,10 +159,10 @@
         });
 
         // GSAP Animation for back link
-        gsap.to(".back-link", {
+        gsap.to("#back-link", {
             opacity: 1,
             y: 0,
-            delay: 1, // Delay the animation to ensure it appears after the form
+            delay: 0.5,
             duration: 0.8,
             ease: "power3.out"
         });

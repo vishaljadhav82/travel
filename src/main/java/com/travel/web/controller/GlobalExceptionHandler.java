@@ -33,6 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ModelAndView handleIllegalArgument(IllegalArgumentException ex, Model model) {
+    	System.out.println(ex.getLocalizedMessage());
         return buildErrorPage(model, HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
@@ -42,6 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView handleRuntimeException(RuntimeException ex, Model model) {
+    	System.out.println(ex.getLocalizedMessage());
         return buildErrorPage(model, HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
     }
 

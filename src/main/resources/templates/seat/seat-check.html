@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Seat Booking</title>
+</head>
+<body>
+ <!-- नेव्हबार सेक्शन -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
+        <a class="navbar-brand" href="/user">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers">Passangers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/search">Trip Search</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/signup">Sign up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/public/login">Log in</a>
+                </li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger">Log out</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h2>Seat Booking</h2>
+
+    <form action="/user/booking/check-availability" method="post">
+        <label for="from">From Stop:</label>
+        <select name="from" id="from">
+            <option value="">Select From Stop</option>
+            <th:block th:each="stop : ${allStops}">
+                <option th:value="${stop.stopName}" th:text="${stop.stopName}"></option>
+            </th:block>
+        </select>
+
+        <label for="to">To Stop:</label>
+        <select name="to" id="to">
+            <option value="">Select To Stop</option>
+            <th:block th:each="stop : ${allStops}">
+                <option th:value="${stop.stopName}" th:text="${stop.stopName}"></option>
+            </th:block>
+        </select>
+
+        <button type="submit">Check Availability</button>
+    </form>
+
+    <h3>Available Trips</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Trip ID</th>
+                <th>Start Location</th>
+                <th>Destination</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="trip : ${trips}">
+                <td th:text="${trip.id}"></td>
+                <td th:text="${trip.fromLocation}"></td>
+                <td th:text="${trip.destinationLocation}"></td>
+                <td th:text="${trip.date}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

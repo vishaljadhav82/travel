@@ -37,7 +37,7 @@ public class ScheduleTripController {
     public String listTrips(Model model) {
         List<ScheduleTrip> trips = scheduleTripService.getAllTrips();
         model.addAttribute("trips", trips);
-        return "trip-list"; // Thymeleaf template (scheduleTrips/list.html)
+        return "trip/trip-list"; // Thymeleaf template (scheduleTrips/list.html)
     }
 
     @GetMapping("/create")
@@ -48,7 +48,7 @@ public class ScheduleTripController {
         model.addAttribute("buses", buses);
         model.addAttribute("routes", routes);
 
-        return "trip-form"; // Thymeleaf form for adding/updating
+        return "trip/trip-form"; // Thymeleaf form for adding/updating
     }
 
     // Save new trip

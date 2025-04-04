@@ -1,8 +1,13 @@
 package com.travel.web.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -13,11 +18,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.travel.web.model.Booking;
 import com.travel.web.model.Bus;
+import com.travel.web.model.Route;
+import com.travel.web.model.ScheduleTrip;
 import com.travel.web.model.Seat;
+import com.travel.web.model.Stop;
+import com.travel.web.repository.BookingRepository;
 import com.travel.web.repository.BusRepository;
+import com.travel.web.repository.ScheduleTripRepository;
 import com.travel.web.repository.SeatRepository;
 import com.travel.web.service.RouteService;
 import com.travel.web.service.StopService;
@@ -34,7 +46,10 @@ public class AdminController {
     private StopService stopService;
     @Autowired
     private SeatRepository seatRepository;
-
+    @Autowired
+    private BookingRepository bookingRepository;
+    @Autowired
+    private ScheduleTripRepository scheduleTripRepository;
     @Autowired
     public AdminController(BusRepository busRepository) {
         this.busRepository = busRepository;
@@ -49,7 +64,7 @@ public class AdminController {
     @GetMapping("/add")
     public String showAddBusForm(Model model) {
         model.addAttribute("bus", new Bus());
-        return "add-bus";
+        return "bus/add-bus";
     }
 
     @PostMapping("/add")
@@ -103,5 +118,23 @@ public class AdminController {
     public String handleException(Exception e, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("error", "An unexpected error occurred: " + e.getMessage());
         return "redirect:/admin";
+    }
+    @ResponseBody
+    @GetMapping("/dashbourd")
+    public ResponseEntity<?> dashboaurd(){
+    List<Bus> buses =	busRepository.findAll();
+   List<Route> routes = routeService.getAllRoutes();
+   List<Stop> stops = stopService.getAllStops();
+   List<Seat> seats = seatRepository.findAll();
+   List<Booking> bookings = bookingRepository.findAll();
+   List<ScheduleTrip> scheduleTrips = scheduleTripRepository.findAll();
+   Map<String,List<?>> map = new HashMap<>();
+   map.put("buses", buses);
+   map.put("routes", routes);
+   map.put("stops", stops);
+   map.put("seats", seats);
+   map.put("bookings", bookings);
+   map.put("scheduleTrips", scheduleTrips);
+    	return new ResponseEntity(map,HttpStatus.ACCEPTED);
     }
 }
