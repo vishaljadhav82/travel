@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.travel.web.model.Passenger;
 import com.travel.web.model.User;
@@ -46,9 +47,10 @@ public class UserController {
     }
 
     @PostMapping("/passengers/save")
-    public String savePassenger(@ModelAttribute Passenger passenger) {
+    public String savePassenger(@ModelAttribute Passenger passenger,RedirectAttributes redirectAttributes) {
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-      
+        redirectAttributes.addFlashAttribute("toastMessage", "Passenger saved successfully!");
+
         passengerService.savePassenger(passenger,auth.getName());
         return "redirect:/user/passengers/form";
     }

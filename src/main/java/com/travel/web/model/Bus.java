@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "buses")
@@ -31,6 +32,8 @@ public class Bus {
     private int capacity;
     @OneToMany
     private List<Seat> busSeats = new ArrayList<Seat>();
+    @Transient
+    private int totalSeats;
     
     private boolean isAvailable;
 
@@ -92,6 +95,15 @@ public class Bus {
 	public void setBusSeats(List<Seat> busSeats) {
 		this.busSeats = busSeats;
 	}
+
+	public int getTotalSeats() {
+		return totalSeats;
+	}
+
+	public void setTotalSeats(int totalSeats) {
+		this.totalSeats = totalSeats;
+	}
     
+	
 	
 }

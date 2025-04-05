@@ -92,36 +92,61 @@
 </head>
 <body>
  <!-- नेव्हबार सेक्शन -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
-        <a class="navbar-brand" href="/user">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers">Passangers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/search">Trip Search</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/signup">Sign up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/login">Log in</a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Log out</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="/user">
+			<i class="bi bi-house-fill me-2"></i> Home
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="offcanvas offcanvas-end text-bg-dark" id="offcanvasDarkNavbar">
+			<div class="offcanvas-header">
+				<h5 class="offcanvas-title">Menu</h5>
+				<button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+			</div>
+			<div class="offcanvas-body">
+				<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+
+					<!-- Passengers Section -->
+					<li><h6 class="text-uppercase text-secondary mt-2 mb-1">Passengers</h6></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/user/passengers"><i class="bi bi-people-fill me-2"></i> Passengers</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/user/passengers/form"><i class="bi bi-person-plus-fill me-2"></i> Add Passenger</a></li>
+
+					<!-- Trip Section -->
+					<li><h6 class="text-uppercase text-secondary mt-3 mb-1">Trips</h6></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/public/search"><i class="bi bi-search me-2"></i> Trip Search</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/scheduleTrip/list"><i class="bi bi-list-ul me-2"></i> Trip List</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/scheduleTrip/create"><i class="bi bi-calendar-plus me-2"></i> Create Trip</a></li>
+					<li class="nav-item"><a class="nav-link text-white" th:href="@{/admin/scheduleTrip/list}"><i class="bi bi-calendar-check me-2"></i> Schedule Trips</a></li>
+					<li class="nav-item"><a class="nav-link text-white" th:href="@{/admin/scheduleTrip/create}"><i class="bi bi-plus-circle me-2"></i> Add New Trip</a></li>
+
+					<!-- Buses and Routes Section -->
+					<li><h6 class="text-uppercase text-secondary mt-3 mb-1">Routes & Buses</h6></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/buses"><i class="bi bi-truck-front me-2"></i> Manage Buses</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/route/list"><i class="bi bi-signpost-split me-2"></i> Manage Routes</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/routes"><i class="bi bi-signpost-2-fill me-2"></i> All Routes</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/routes/create"><i class="bi bi-plus-circle-fill me-2"></i> Create Route</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/admin/routes"><i class="bi bi-geo-alt-fill me-2"></i> Manage Stops</a></li>
+
+					<!-- Authentication Section -->
+					<li><h6 class="text-uppercase text-secondary mt-3 mb-1">Authentication</h6></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/public/signup"><i class="bi bi-person-plus-fill me-2"></i> Sign up</a></li>
+					<li class="nav-item"><a class="nav-link text-white" href="/public/login"><i class="bi bi-box-arrow-in-right me-2"></i> Log in</a></li>
+					<li class="nav-item mt-2">
+						<form th:action="@{/logout}" method="post">
+							<button type="submit" class="btn btn-danger btn-sm w-100">
+								<i class="bi bi-box-arrow-right me-2"></i> Log out
+							</button>
+						</form>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+</nav>
 
     <div class="form-container" id="form-container">
         <h2>Edit Stop</h2>

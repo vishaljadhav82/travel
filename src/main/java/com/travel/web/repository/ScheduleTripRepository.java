@@ -11,4 +11,5 @@ import com.travel.web.model.ScheduleTrip;
 @Repository
 public interface ScheduleTripRepository extends JpaRepository<ScheduleTrip, Long> {
 	List<ScheduleTrip> findByTripDate(LocalDate date);
+	
 }

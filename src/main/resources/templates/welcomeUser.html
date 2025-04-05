@@ -4,476 +4,168 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> <!-- Font Awesome for stars -->
-
-    <style>
-        /* Global Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-image: url('https://images.pexels.com/photos/20849154/pexels-photo-20849154/free-photo-of-interior-of-bus-with-toilet.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    height: 100vh;
-    overflow-y: auto;
-    color: #333; /* Default text color */
-}
-
-/* Navbar Styles */
-.navbar {
-    background-color: rgba(44, 27, 81, 0.9); /* Slightly more opaque for better visibility */
-    border-bottom: 2px solid #fff;
-    padding: 10px 0;
-    z-index: 1000;
-}
-
-.navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #ffffff !important;
-}
-
-.navbar-nav .nav-link {
-    color: #ffffff !important;
-    font-size: 1rem;
-    margin: 0 10px;
-    transition: color 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover {
-    color: #49a09d !important;
-}
-
-.navbar-toggler {
-    border-color: #ffffff;
-}
-
-.navbar-toggler-icon {
-    background-color: #ffffff;
-}
-
-/* Container Styles */
-.container {
-    margin-top: 120px;
-    z-index: 10;
-}
-
-/* Glass Card Styles */
-.glass-card {
-    background: rgba(255, 255, 255, 0.8); /* Slightly more opaque for better readability */
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 30px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 250px;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    margin-bottom: 20px; /* Added margin for better spacing */
-}
-
-.glass-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.3);
-}
-
-.glass-card h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c1b51; /* Darker color for better contrast */
-}
-
-.glass-card p {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    color: #555; /* Slightly darker for better readability */
-}
-
-.glass-card a {
-    background-color: #49a09d;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.glass-card a:hover {
-    background-color: #2c1b51;
-}
-
-/* Footer Styles */
-.footer {
-    position: relative;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    background-color: #2c1b51;
-    padding: 10px 0;
-    color: white;
-    font-size: 0.9rem;
-}
-
-/* Blurred Backgrounds for Sections */
-.section-background {
-    background: rgba(0, 0, 0, 0.6); /* Darker background for better contrast */
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 30px;
-    color: white; /* White text for better readability */
-}
-
-.section-background-white {
-    background: rgba(255, 255, 255, 0.9); /* More opaque for better readability */
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    padding: 30px;
-    color: #333; /* Dark text for better contrast */
-}
-
-/* Contact Section Styles */
-.contact-section {
-    margin-top: 50px;
-    padding: 20px;
-    text-align: center;
-}
-
-.contact-section h2 {
-    font-size: 2rem;
-    color: #2c1b51;
-    margin-bottom: 20px;
-}
-
-.contact-section p {
-    font-size: 1rem;
-    color: #555;
-}
-
-/* Responsive Design Adjustments */
-@media (max-width: 768px) {
-    .navbar-nav .nav-link {
-        margin: 5px 0;
-    }
-
-    .glass-card {
-        height: auto;
-        padding: 20px;
-    }
-
-    .glass-card h2 {
-        font-size: 1.2rem;
-    }
-
-    .glass-card p {
-        font-size: 0.9rem;
-    }
-
-    .rating-carousel .carousel-item {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .rating-carousel .carousel-item img {
-        margin-bottom: 10px;
-    }
-}    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
 </head>
-<body>
+<body class="bg-light text-dark">
 
-       <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
-        <a class="navbar-brand" href="/user">TravelWith</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
-            <span class="navbar-toggler-icon"></span>
+<!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">TravelWith</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers">Passangers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/search">Trip Search</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/signup">Sign up with new accounts</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/login">Log in another account</a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Log out</button>
-                    </form>
-                </li>
+
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Navigation</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item"><a class="nav-link text-white" href="/user">Home</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="stopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-signpost"></i> Stops
+                </a>
+                <ul class="dropdown-menu bg-dark border-0" aria-labelledby="stopDropdown">
+                  <li><a class="dropdown-item text-light" th:href="@{/admin/stops}"><i class="bi bi-list-ul me-2"></i> View Stops</a></li>
+                  <li><a class="dropdown-item text-light" th:href="@{/admin/stops/add}"><i class="bi bi-plus-circle me-2"></i> Add Stop</a></li>
+                  <li><a class="dropdown-item text-light" th:href="@{#}"><i class="bi bi-download me-2"></i> Export Stops</a></li>
+                </ul>
+              </li>
+              <li class="nav-item"><a class="nav-link active" href="/admin/buses">Buses</a></li>
+              <li class="nav-item"><a class="nav-link" href="/admin/buses/new">Add Bus</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="/user/passengers"><i class="bi bi-people-fill me-2"></i> Passengers</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="/user/passengers/form"><i class="bi bi-person-plus-fill me-2"></i> Add Passenger</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="/public/search"><i class="bi bi-search me-2"></i> Trip Search</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="/public/signup"><i class="bi bi-person-badge-fill me-2"></i> Sign up</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="/public/login"><i class="bi bi-box-arrow-in-right me-2"></i> Log in</a></li>
+              <li class="nav-item">
+                <form th:action="@{/logout}" method="post">
+                  <button class="btn btn-danger mt-2" type="submit"><i class="bi bi-box-arrow-right me-2"></i> Log out</button>
+                </form>
+              </li>
             </ul>
+            <form class="d-flex mt-3" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+              <button class="btn btn-success" type="submit">Search</button>
+            </form>
+          </div>
         </div>
+      </div>
     </nav>
 
-    <!-- मुख्य कंटेंट सेक्शन नेव्हिगेशन कार्डसह -->
-    <section class="container section-background-white">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            <!-- कार्ड 1 -->
-            <div class="col">
-                <div class="glass-card">
-                    <h2>See Passangers</h2>
-                    <p>See your all passangers list.</p>
-                    <a href="/user/passengers">Click here</a>
-                </div>
-            </div>
+<!-- Lottie Header -->
+<div id="headerLottie" class="container mt-5" style="height: 200px;"></div>
 
-            <!-- कार्ड 2 -->
-            <div class="col">
-                <div class="glass-card">
-                    <h2>Add Passanger</h2>
-                    <p>For next trip add new Passanger.</p>
-                    <a href="/user/passengers/form">Click here</a>
-                </div>
-            </div>
-
-            <!-- कार्ड 3 -->
-            <div class="col">
-                <div class="glass-card">
-                    <h2>Bookings</h2>
-                    <p>See your recent booking history.</p>
-                    <a href="/user/booking/my-bookings">Click here</a>
-                </div>
-            </div>
-
-            <!-- कार्ड 4 -->
-            <div class="col">
-                <div class="glass-card">
-                    <h2>Search</h2>
-                    <p>Search Avialable trips.</p>
-                    <a href="/public/search">Click here</a>
-                </div>
-            </div>
-
-            <!-- कार्ड 5 -->
-            <div class="col">
-                <div class="glass-card">
-                    <h2>Create Account</h2>
-                    <p>Create another new account</p>
-                    <a href="/public/signup">Create account</a>
-                </div>
-            </div>
-
-            <!-- कार्ड 6 -->
-            <div class="col">
-                <div class="glass-card">
-                    <h2>Log in</h2>
-                    <p>Log in another account</p>
-                    <a href="/public/login">जाऊन लॉगिन करा</a>
+<!-- Navigation Cards -->
+<div class="container mt-5 pt-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div id="lottie1" class="card-img-top" style="height: 150px;"></div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">See Passengers</h5>
+                    <p class="card-text">View your passenger list.</p>
+                    <a href="/user/passengers" class="btn btn-primary">Click here</a>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- युजर रेटिंग कॅरोसेल सेक्शन -->
-    <section class="container my-5 section-background">
-        <h2 class="text-center">Reviews</h2>
-        <div id="ratingCarousel" class="carousel slide rating-carousel" data-bs-ride="carousel">
-            <div class="carousel-inner">
-            <!-- Rating Item 1 -->
-<div class="carousel-item active">
-    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User 1">
-    <div>
-        <p class="rating">John Doe</p>
-        <p class="feedback">"Great service! Loved the comfort and ease of booking. The staff was professional and the journey was smooth. Highly recommend to anyone looking for a reliable travel service. The booking process was simple and efficient. Will definitely use it again."</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div id="lottie2" class="card-img-top" style="height: 150px;"></div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Add Passenger</h5>
+                    <p class="card-text">Add a new passenger for the next trip.</p>
+                    <a href="/user/passengers/form" class="btn btn-primary">Click here</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div id="lottie3" class="card-img-top" style="height: 150px;"></div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Bookings</h5>
+                    <p class="card-text">Check your booking history.</p>
+                    <a href="/user/booking/my-bookings" class="btn btn-primary">Click here</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div id="lottie4" class="card-img-top" style="height: 150px;"></div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Search</h5>
+                    <p class="card-text">Search available trips.</p>
+                    <a href="/public" class="btn btn-primary">Click here</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div id="lottie5" class="card-img-top" style="height: 150px;"></div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Create Account</h5>
+                    <p class="card-text">Register a new account.</p>
+                    <a href="/public/signup" class="btn btn-primary">Create account</a>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                <div id="lottie6" class="card-img-top" style="height: 150px;"></div>
+                <div class="card-body text-center">
+                    <h5 class="card-title">Log in</h5>
+                    <p class="card-text">Use another account to log in.</p>
+                    <a href="/public/login" class="btn btn-primary">Click here</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Rating Item 2 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="User 2">
-    <div>
-        <p class="rating">Jane Smith</p>
-        <p class="feedback">"The journey was very comfortable, and the staff was extremely polite. I felt safe and well taken care of. The vehicle was clean, and the overall experience exceeded my expectations. I will definitely be using this service again in the future. Great job!"</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-            <i class="far fa-star"></i>
-        </div>
-    </div>
-</div>
+<!-- Footer -->
+<footer class="bg-dark text-center text-white py-3 mt-5">
+    © 2025 TravelWith. All rights reserved.
+</footer>
 
-<!-- Rating Item 3 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="User 3">
-    <div>
-        <p class="rating">Carlos Mendez</p>
-        <p class="feedback">"Very punctual and safe journey. I had a fantastic experience with this service. The booking process was smooth, the drivers were professional, and the journey was comfortable. I truly appreciate the attention to detail. Will surely use them again for my future travels."</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-        </div>
-    </div>
-</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Rating Item 4 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="User 4">
-    <div>
-        <p class="rating">Michael Johnson</p>
-        <p class="feedback">"I had an amazing experience with this travel service. The ride was comfortable, and the driver was very courteous. The booking system was user-friendly, and I received real-time updates. Highly recommend this service to anyone looking for convenience and reliability."</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-        </div>
-    </div>
-</div>
+<!-- Lottie Animations -->
+<script>
+    // Main header animation
+    lottie.loadAnimation({
+        container: document.getElementById('headerLottie'),
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json'
+    });
 
-<!-- Rating Item 5 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="User 5">
-    <div>
-        <p class="rating">Emma Williams</p>
-        <p class="feedback">"I was really impressed by the entire experience. The vehicle was clean, well-maintained, and the driver was very professional. I felt safe and relaxed throughout the journey. The service was on time and exceeded my expectations. Will definitely book again!"</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-        </div>
-    </div>
-</div>
+    // Card animations
+       const animations = [
+        {id: 'lottie1', path: 'https://assets4.lottiefiles.com/packages/lf20_zrqthn6o.json'}, // See Passengers
+        {id: 'lottie2', path: 'https://assets4.lottiefiles.com/packages/lf20_1pxqjqps.json'}, // Add Passenger
+        {id: 'lottie3', path: 'https://assets1.lottiefiles.com/packages/lf20_4kx2q32n.json'}, // Bookings ✅ working
+        {id: 'lottie4', path: 'https://assets4.lottiefiles.com/packages/lf20_UJNc2t.json'}, // Search ✅ working
+        {id: 'lottie5', path: 'https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json'}, // Create Account ✅ working
+        {id: 'lottie6', path: 'https://assets4.lottiefiles.com/packages/lf20_gjmecwii.json'} // Log in ✅ already working
+    ];
 
-<!-- Rating Item 6 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/men/5.jpg" alt="User 6">
-    <div>
-        <p class="rating">James Brown</p>
-        <p class="feedback">"The service was excellent from start to finish. The driver was professional and the car was spotless. I really appreciated the smooth journey and the punctuality of the service. Highly recommend to anyone looking for a hassle-free and comfortable ride!"</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-        </div>
-    </div>
-</div>
-
-<!-- Rating Item 7 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/women/6.jpg" alt="User 7">
-    <div>
-        <p class="rating">Sophia Lee</p>
-        <p class="feedback">"I was very happy with the service provided. The driver was on time, courteous, and professional. The ride was comfortable, and I received great customer support throughout the booking process. Definitely the best travel experience I have had in a long time!"</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-        </div>
-    </div>
-</div>
-
-<!-- Rating Item 8 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/men/6.jpg" alt="User 8">
-    <div>
-        <p class="rating">David Harris</p>
-        <p class="feedback">"The booking was simple, and the journey was very smooth. The vehicle was clean, and the driver was very professional. I felt very safe, and the trip was enjoyable. This is a great travel service that I would recommend to anyone looking for comfort and reliability."</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-            <i class="far fa-star"></i>
-        </div>
-    </div>
-</div>
-
-<!-- Rating Item 9 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/women/7.jpg" alt="User 9">
-    <div>
-        <p class="rating">Olivia Green</p>
-        <p class="feedback">"My experience was fantastic! The driver was polite and arrived on time. The car was very clean and comfortable, and the whole experience was seamless from start to finish. I would definitely use this service again for future travels. Excellent service overall!"</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-        </div>
-    </div>
-</div>
-
-<!-- Rating Item 10 -->
-<div class="carousel-item">
-    <img src="https://randomuser.me/api/portraits/men/7.jpg" alt="User 10">
-    <div>
-        <p class="rating">Daniel Scott</p>
-        <p class="feedback">"This service exceeded my expectations. The driver was on time, very polite, and the journey was very comfortable. The vehicle was clean and spacious, and the booking process was easy. I highly recommend this service to anyone looking for a reliable and efficient transportation option."</p>
-        <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-        </div>
-    </div>
-</div>
-            
-                <!-- आणखी रेटिंग्ज (20 पर्यंत) जोडता येतील -->
-            <button class="carousel-control-prev" type="button" data-bs-target="#ratingCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#ratingCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </section>
-
-    <!-- संपर्क सेक्शन -->
-    <section class="contact-section m-1">
-        <div class="container section-background-white">
-            <h2>Contact us</h2>
-            <p>If you have any queyries contact us</p>
-        </div>
-    </section>
-
-    <section>
-    <!-- पाय footer सेक्शन -->
-    <footer class="footer" style="margin-top:20px;">
-        <p>© 2025 TravelWith</p>
-    </footer>
-    </section>
-    <!-- बूटस्ट्रॅप JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    animations.forEach(anim => {
+        lottie.loadAnimation({
+            container: document.getElementById(anim.id),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: anim.path
+        });
+    });
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js" integrity="sha384-YUe2LzesAfftltw+PEaao2tjU/QATaW/rOitAq67e0CT0Zi2VVRL0oC4+gAaeBKu" crossorigin="anonymous"></script>
 
 </body>
 </html>

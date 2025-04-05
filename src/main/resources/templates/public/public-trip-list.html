@@ -1,72 +1,134 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Scheduled Trips</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<title>Scheduled Trips</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Lottie Player -->
+<script
+	src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
+
 <body class="bg-light">
 
-<!-- Offcanvas Dark Navbar -->
-<nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="/user">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-                aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNavbar"
-             aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                        aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item"><a class="nav-link" href="/user/passengers">Passengers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/user/passengers/form">Add Passenger</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/search">Trip Search</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/signup">Sign up</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/login">Log in</a></li>
-                    <li class="nav-item">
-                        <form th:action="@{/logout}" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger mt-2">Log out</button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+	<!-- Offcanvas Dark Navbar -->
+	<nav class="navbar navbar-dark bg-dark fixed-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/user">Home</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+				aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1"
+				id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+					<button type="button" class="btn-close btn-close-white"
+						data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item"><a class="nav-link"
+							href="/user/passengers">Passengers</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/user/passengers/form">Add Passenger</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/public/search">Trip Search</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/public/signup">Sign up</a></li>
+						<li class="nav-item"><a class="nav-link" href="/public/login">Log
+								in</a></li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle text-white" href="#"
+							id="stopDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false"> <i class="bi bi-signpost"></i> Stops
+						</a>
+							<ul class="dropdown-menu bg-dark border-0"
+								aria-labelledby="stopDropdown">
+								<li><a class="dropdown-item text-light"
+									th:href="@{/admin/stops}"> <i class="bi bi-list-ul me-2"></i>
+										View Stops
+								</a></li>
+								<li><a class="dropdown-item text-light"
+									th:href="@{/admin/stops/add}"> <i
+										class="bi bi-plus-circle me-2"></i> Add Stop
+								</a></li>
+								<li><a class="dropdown-item text-light" th:href="@{#}">
+										<i class="bi bi-download me-2"></i> Export Stops
+								</a></li>
+							</ul></li>
+						<li class="nav-item"><a class="nav-link" href="/admin/buses">Buses</a></li>
+						<li class="nav-item"><a class="nav-link"
+							href="/admin/buses/new">Add Bus</a></li>
+						<li class="nav-item">
+							<form th:action="@{/logout}" method="post" class="d-inline">
+								<button type="submit" class="btn btn-danger mt-2">
+									<i class="bi bi-box-arrow-right me-2"></i> Log out
+								</button>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
 
-<!-- Main Content -->
-<div class="container mt-5 pt-5">
-    <h2 class="mb-4 text-center text-primary">Scheduled Trips</h2>
-    <div class="row g-4">
-        <div class="col-md-4" th:each="trip : ${trips}">
-            <div class="card h-100 shadow">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <span th:text="${trip.route.routeName}"></span>
-                    </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        <span th:text="${trip.availableSeats} + ' Seats Available'"></span>
-                    </h6>
-                    <p class="card-text">
-                        <strong>Total Distance:</strong> <span th:text="${trip.route.totalDistance} + ' Km'"></span><br>
-                        <strong>Trip Date:</strong> <span th:text="${trip.tripDate}"></span><br>
-                        <strong>Trip Time:</strong> <span th:text="${trip.tripTime}"></span>
-                    </p>
-                    <div th:if="${trip.tripEnd == 0}">
-                        <a th:href="@{/user/booking/book/{id}(id=${trip.id})}" class="btn btn-success w-100">Book Now</a>
-                    </div>
-                    <div th:if="${trip.tripEnd == 1}" class="text-danger fw-bold text-center mt-2">Completed Trip</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+	<!-- Main Content -->
+	<div class="container mt-5 pt-5">
+		<h2 class="mb-4 text-center text-primary">Scheduled Trips</h2>
+
+		<!-- No Trips Found -->
+		<div th:if="${#lists.isEmpty(trips)}" class="text-center my-5">
+			<div class="d-flex justify-content-center">
+				<!-- 403 Forbidden -->
+				<lottie-player 
+					src="https://assets5.lottiefiles.com/packages/lf20_i2eyukor.json"
+					background="transparent" speed="1"
+					style="width: 100%; height: 300px;" loop autoplay>
+				</lottie-player>
+
+			</div>
+			<h4 class="text-muted mt-3">No Trips Available</h4>
+		</div>
+
+		<!-- Trips Grid -->
+		<div class="row g-4" th:if="${not #lists.isEmpty(trips)}">
+			<div class="col-md-4" th:each="trip : ${trips}">
+				<div class="card h-100 shadow">
+					<div class="card-body">
+						<h5 class="card-title" th:text="${trip.route.routeName}"></h5>
+						<h6 class="card-subtitle mb-2 text-muted">
+							<span th:if="${trip.availableSeats > 0}"
+								th:text="${trip.availableSeats} + ' Seats Available'"></span> <span
+								th:unless="${trip.availableSeats > 0}">Hurry up! Few
+								seats are available</span>
+						</h6>
+						<p class="card-text">
+							<strong>Total Distance:</strong> <span
+								th:text="${trip.route.totalDistance} + ' Km'"></span><br> <strong>Trip
+								Date:</strong> <span th:text="${trip.tripDate}"></span><br> <strong>Trip
+								Time:</strong> <span th:text="${trip.tripTime}"></span>
+						</p>
+						<div th:if="${trip.tripEnd == 0}">
+							<a th:href="@{/user/booking/book/{id}(id=${trip.id})}"
+								class="btn btn-success w-100">Book Now</a>
+						</div>
+						<div th:if="${trip.tripEnd == 1}"
+							class="text-danger fw-bold text-center mt-2">Completed Trip</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
+
 </html>

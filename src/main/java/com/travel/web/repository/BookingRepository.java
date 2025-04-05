@@ -17,5 +17,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 	public List<Booking> findByUsername(String username);
 
 	public List<Booking> findBySeatNumber(int num);
+	
 
 }

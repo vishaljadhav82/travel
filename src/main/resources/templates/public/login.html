@@ -50,25 +50,58 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers">Passanger</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="/public/search">Search Trips</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/public/signup">Sign up</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/login">Log in</a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Log out</button>
-                    </form>
-                </li>
+                    				<li class="nav-item"><a class="nav-link text-white"
+							href="/user">Home</a></li>
+						<li class="nav-item dropdown"><a
+							class="nav-link dropdown-toggle text-white" href="#"
+							id="stopDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false"> <i class="bi bi-signpost"></i> Stops
+						</a>
+							<ul class="dropdown-menu bg-dark border-0"
+								aria-labelledby="stopDropdown">
+								<li><a class="dropdown-item text-light"
+									th:href="@{/admin/stops}"><i class="bi bi-list-ul me-2"></i>
+										View Stops</a></li>
+								<li><a class="dropdown-item text-light"
+									th:href="@{/admin/stops/add}"><i
+										class="bi bi-plus-circle me-2"></i> Add Stop</a></li>
+								<li><a class="dropdown-item text-light" th:href="@{#}"><i
+										class="bi bi-download me-2"></i> Export Stops</a></li>
+							</ul></li>
+							<li class="nav-item">
+                        <a class="nav-link active" href="/admin/buses">Buses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/buses/new">Add Bus</a>
+                    </li>
+
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/user/passengers"><i class="bi bi-people-fill me-2"></i>
+								Passengers</a></li>
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/user/passengers/form"><i
+								class="bi bi-person-plus-fill me-2"></i> Add Passenger</a></li>
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/public/search"><i class="bi bi-search me-2"></i> Trip
+								Search</a></li>
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/public/signup"><i class="bi bi-person-badge-fill me-2"></i>
+								Sign up</a></li>
+						<li class="nav-item"><a class="nav-link text-white"
+							href="/public/login"><i class="bi bi-box-arrow-in-right me-2"></i>
+								Log in</a></li>
+						<li class="nav-item">
+							<form th:action="@{/logout}" method="post">
+								<button class="btn btn-danger mt-2" type="submit">
+									<i class="bi bi-box-arrow-right me-2"></i> Log out
+								</button>
+							</form>
+						</li>               
             </ul>
         </div>
     </nav>

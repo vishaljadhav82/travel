@@ -65,7 +65,7 @@ public class ScheduleTripController {
       
         if (trip != null) {
             model.addAttribute("trip", trip);
-            return "trip-form-edit";
+            return "trip/trip-form-edit";
         }
         return "redirect:/admin/scheduleTrip/list";
     }

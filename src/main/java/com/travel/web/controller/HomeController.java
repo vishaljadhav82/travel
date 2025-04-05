@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.travel.web.config.Role;
 import com.travel.web.model.Booking;
+import com.travel.web.model.Route;
 import com.travel.web.model.ScheduleTrip;
 import com.travel.web.model.Stop;
 import com.travel.web.model.TripSearchCriteria;
@@ -45,12 +50,8 @@ public class HomeController {
     @Autowired
     private ScheduleTripService scheduleTripService;
 
-    @GetMapping
-    public String index() {
-        return "index";
-    }
 
-    @GetMapping("/search")
+    @GetMapping
     public String home(Model model) {
         List<Stop> allStops = stopService.getAllStops();
         model.addAttribute("allStops", allStops);
@@ -58,6 +59,8 @@ public class HomeController {
         trips.forEach(e -> System.out.println(e));
         return "public/t-search";
     }
+    
+
 
     @GetMapping("/login")
     public String loginPage() {
@@ -67,7 +70,7 @@ public class HomeController {
 
     @GetMapping("/signup")
     public String registerPage() {
-        return "user-form"; // Renders the signup form
+        return "public/user-form"; // Renders the signup form
     }
 
     @PostMapping("/register")

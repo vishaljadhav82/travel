@@ -1,160 +1,169 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #007bff, #00c6ff);
-            color: white;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-        }
-        .card {
-            background: #fff;
-            color: #333;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            width: 350px; /* Card width */
-            margin: 30px;
-            text-align: left;
-            display: inline-block;
-            text-transform: capitalize;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.2);
-        }
-        .card h3 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #007bff;
-        }
-        .card p {
-            font-size: 1.1em;
-            line-height: 1.5;
-        }
-        .card p strong {
-            font-weight: 600;
-            color: #007bff;
-        }
-        .card .card-header {
-    background: linear-gradient(to right, #007bff, #00c6ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    padding: 15px;
-    border-radius: 10px 10px 0 0;
-    font-size: 1.3em;
-}
-
-        .download-btn {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            font-weight: bold;
-            border-radius: 8px;
-            margin-top: 15px;
-            transition: background 0.3s ease;
-        }
-        .download-btn:hover {
-            background: #0056b3;
-        }
-        .hidden {
-            display: none;
-        }
-        /* Watermark Styling */
-        .watermark {
-            position: absolute;
-            bottom: 40%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 30px;
-            color: rgba(0, 0, 0, 0.1); /* Light transparent */
-            font-weight: bold;
-            pointer-events: none;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .card {
-                width: 90%;
-                margin: 15px 0;
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                font-size: 14px;
-            }
-            .card {
-                width: 95%;
-                margin: 10px 0;
-            }
-            h2 {
-                font-size: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>My Bookings</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
 </head>
-<body>
+<body class="bg-dark text-light">
 
-    <div class="container">
-        <h2>My Bookings</h2>
-        <div th:each="booking : ${bookings}" class="card" th:id="'booking-card-' + ${booking.id}">
-            <div class="card-header">
-                <h3>Explore World Travels</h3>
-            </div>
-            <p><strong>Booking ID:</strong> <span th:text="${booking.id}"></span></p>
-            <p><strong>Departure Location:</strong> <span th:text="${booking.fromLocation}"></span></p>
-            <p><strong>Destination Location:</strong> <span th:text="${booking.destinationLocation}"></span></p>
-            <p><strong>Departure Date:</strong> <span th:text="${booking.trip.tripDate}"></span></p>
-            <p><strong>Departure Time:</strong> <span th:text="${booking.trip.tripTime}"></span></p>
-            <p><strong>Bus Number:</strong> <span th:text="${booking.trip.bus.busNumber}"></span></p>
-            <p><strong>Route Name:</strong> <span th:text="${booking.trip.route.routeName}"></span></p>
-            <p><strong>Total Distance:</strong> <span th:text="${booking.totalDistance}"></span> km</p>
-            <p><strong>Amount Paid:</strong> ₹<span th:text="${booking.rupeesPaid}"></span></p>
-            <p><strong>Status:</strong> <span th:if="${booking.status == 'COMPLETED'}" th:text="PAID"></span> <span th:if="${booking.status == 'created'}" th:text="Pending"></span></p>
-
-            <!-- Watermark inside the card -->
-            <div class="watermark">Explore World Travels</div>
-
-            <button class="download-btn" th:attr="data-id=${booking.id}" onclick="downloadBooking(this)">Download as PNG</button>
-        </div>
+<!-- Bootstrap Offcanvas Navbar -->
+<nav class="navbar navbar-dark bg-dark fixed-top">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/user"><i class="bi bi-house-door-fill"></i> Home</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title"><i class="bi bi-list"></i> Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          <li class="nav-item"><a class="nav-link" href="/user/passengers"><i class="bi bi-people"></i> Passengers</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user/passengers/form"><i class="bi bi-person-plus"></i> Add Passenger</a></li>
+          <li class="nav-item"><a class="nav-link" href="/public/search"><i class="bi bi-search"></i> Trip Book</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user/booking/my-bookings"><i class="bi bi-journal-bookmark"></i> My Bookings</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="/admin"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/public/signup"><i class="bi bi-person-add"></i> Sign Up</a></li>
+          <li class="nav-item"><a class="nav-link" href="/public/login"><i class="bi bi-box-arrow-in-right"></i> Log In</a></li>
+          <li class="nav-item">
+            <form th:action="@{/logout}" method="post">
+              <button class="btn btn-danger w-100" type="submit">
+                <i class="bi bi-box-arrow-right"></i> Log Out
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
     </div>
+  </div>
+</nav>
 
-    <script>
-        function downloadBooking(button) {
-            let bookingId = button.getAttribute("data-id");
-            let card = document.getElementById(`booking-card-${bookingId}`);
+<!-- Page Content -->
+<div class="container mt-5 pt-5">
 
-            // Hide the button before capturing the image
-            button.classList.add("hidden");
+  <h2 class="text-center mb-4">My Bookings</h2>
 
-            html2canvas(card, { scale: 2, useCORS: true }).then(canvas => {
-                let link = document.createElement("a");
-                link.download = `Booking_${bookingId}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
+  <div th:if="${#lists.isEmpty(bookings)}" class="text-center my-5">
+    <div class="d-flex justify-content-center">
+      <div id="emptyLottie" style="width: 100%; height: 300px;"></div>
+    </div>
+    <h4 class="text-muted mt-3">No Trips Available</h4>
+  </div>
 
-                // Show the button again
-                button.classList.remove("hidden");
-            });
-        }
-    </script>
+  <div class="table-responsive" th:if="${!#lists.isEmpty(bookings)}">
+    <table class="table table-striped table-hover table-dark" id="bookingTable">
+      <thead>
+      <tr>
+        <th>ID<br><input type="text" class="form-control form-control-sm" placeholder="Search ID" onkeyup="filterTable(0)"></th>
+        <th>From<br><input type="text" class="form-control form-control-sm" placeholder="Search From" onkeyup="filterTable(1)"></th>
+        <th>To<br><input type="text" class="form-control form-control-sm" placeholder="Search To" onkeyup="filterTable(2)"></th>
+        <th>Date<br><input type="date" class="form-control form-control-sm" oninput="filterTable(3)"></th>
+        <th>Time</th>
+        <th>Bus No</th>
+        <th>Route</th>
+        <th>Distance</th>
+        <th>Paid</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="booking : ${bookings}">
+        <td th:text="${booking.id}">1</td>
+        <td th:text="${booking.fromLocation}">From</td>
+        <td th:text="${booking.destinationLocation}">To</td>
+        <td th:text="${booking.trip.tripDate}">2025-04-05</td>
+        <td th:text="${booking.trip.tripTime}">10:30</td>
+        <td th:text="${booking.trip.bus.busNumber}">MH12-1234</td>
+        <td th:text="${booking.trip.route.routeName}">Route A</td>
+        <td th:text="${booking.totalDistance} + ' km'">120 km</td>
+        <td>₹<span th:text="${booking.rupeesPaid}">500</span></td>
+        <td>
+          <span th:if="${booking.status == 'COMPLETED'}" class="badge bg-success">PAID</span>
+          <span th:if="${booking.status == 'created'}" class="badge bg-warning text-dark">Pending</span>
+        </td>
+        <td>
+          <button class="btn btn-outline-info btn-sm" th:attr="data-bs-target='#modal_' + ${booking.id}" data-bs-toggle="modal"><i class="bi bi-eye"></i></button>
+          <button class="btn btn-outline-primary btn-sm" th:attr="onclick='downloadBookingById(' + ${booking.id} + ')'"><i class="bi bi-download"></i></button>
+          <button class="btn btn-outline-secondary btn-sm" th:attr="onclick='printBookingById(' + ${booking.id} + ')'"><i class="bi bi-printer"></i></button>
+          <form th:action="@{'/cancelBooking/' + ${booking.id}}" method="post" class="d-inline" th:if="${booking.status == 'created'}">
+            <button class="btn btn-outline-danger btn-sm" type="submit"><i class="bi bi-x-circle"></i></button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modals -->
+<div th:each="booking : ${bookings}">
+  <div class="modal fade" th:id="'modal_' + ${booking.id}" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Booking Details - ID: <span th:text="${booking.id}">1</span></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>From:</strong> <span th:text="${booking.fromLocation}"></span></p>
+          <p><strong>To:</strong> <span th:text="${booking.destinationLocation}"></span></p>
+          <p><strong>Date:</strong> <span th:text="${booking.trip.tripDate}"></span></p>
+          <p><strong>Time:</strong> <span th:text="${booking.trip.tripTime}"></span></p>
+          <p><strong>Bus Number:</strong> <span th:text="${booking.trip.bus.busNumber}"></span></p>
+          <p><strong>Route:</strong> <span th:text="${booking.trip.route.routeName}"></span></p>
+          <p><strong>Distance:</strong> <span th:text="${booking.totalDistance} + ' km'"></span></p>
+          <p><strong>Paid:</strong> ₹<span th:text="${booking.rupeesPaid}"></span></p>
+          <p><strong>Status:</strong> <span th:text="${booking.status}"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Load Lottie animation only if empty list
+  const emptyLottie = document.getElementById('emptyLottie');
+  if (emptyLottie) {
+    lottie.loadAnimation({
+      container: emptyLottie,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: 'https://assets5.lottiefiles.com/packages/lf20_i2eyukor.json'
+    });
+  }
+
+  function filterTable(colIndex) {
+    const table = document.getElementById("bookingTable");
+    const filter = table.querySelectorAll("thead input")[colIndex].value.toLowerCase();
+    const rows = table.querySelector("tbody").querySelectorAll("tr");
+
+    rows.forEach(row => {
+      const cell = row.getElementsByTagName("td")[colIndex];
+      const text = cell?.textContent || "";
+      row.style.display = text.toLowerCase().includes(filter) ? "" : "none";
+    });
+  }
+
+  function downloadBookingById(id) {
+    downloadBooking({ getAttribute: () => id });
+  }
+
+  function printBookingById(id) {
+    printBooking({ getAttribute: () => id });
+  }
+</script>
 
 </body>
 </html>

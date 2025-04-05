@@ -3,61 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Passenger List</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap CSS & Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
+
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-<body>
- <!-- नेव्हबार सेक्शन -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top w-100">
-        <a class="navbar-brand" href="/user">Home</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="नॅव्हिगेशन टॉगल करा">
+<body class="bg-dark text-light">
+
+<!-- Offcanvas Dark Navbar -->
+<nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/user"><i class="bi bi-house-fill"></i> Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers">Passangers</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/user/passengers/form">Add Passanger</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/search">Trip Search</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/signup">Sign up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/public/login">Log in</a>
-                </li>
-                <li class="nav-item">
-                    <form th:action="@{/logout}" method="post" class="d-inline">
-                        <button type="submit" class="btn btn-danger">Log out</button>
-                    </form>
-                </li>
-            </ul>
+        <div class="offcanvas offcanvas-end text-bg-dark" id="offcanvasNavbar">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title">Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/user/passengers"><i class="bi bi-people-fill"></i> Passengers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/passengers/form"><i class="bi bi-person-plus-fill"></i> Add Passenger</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/public/search"><i class="bi bi-search"></i> Trip Search</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/booking/my-bookings"><i class="bi bi-journal-bookmark"></i> My Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/public/about-us"><i class="bi bi-info-circle-fill me-2"></i> About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/public/signup"><i class="bi bi-person-lines-fill"></i> Sign Up with new</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/public/login"><i class="bi bi-box-arrow-in-right"></i> Log In with another</a></li>
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger mt-2">
+                                <i class="bi bi-box-arrow-right"></i> Log Out
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <div class="container mt-5">
-        <h2 class="mb-4">Passenger List</h2>
-        
-        <a href="/user/passengers/form" class="btn btn-primary mb-3">Add New Passenger</a>
-        
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+<!-- Main Container -->
+<div class="container mt-5 pt-5">
+
+    <h2 class="mb-4">Passenger List</h2>
+    <a href="/user/passengers/form" class="btn btn-primary mb-3"><i class="bi bi-plus-circle-fill"></i> Add New Passenger</a>
+
+    <!-- Filter Row -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-dark align-middle">
+            <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                    <th>Gender</th>
-                    <th>Age</th>
+                    <th>ID <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search ID"></th>
+                    <th>First Name <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search First Name"></th>
+                    <th>Last Name <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search Last Name"></th>
+                    <th>Email <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search Email"></th>
+                    <th>Phone Number <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search Phone"></th>
+                    <th>Gender <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search Gender"></th>
+                    <th>Age <input type="text" class="form-control form-control-sm mt-1 filter-input" placeholder="Search Age"></th>
                     <th>Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="passengerTable">
                 <tr th:each="passenger : ${passengers}">
                     <td th:text="${passenger.id}"></td>
                     <td th:text="${passenger.firstName}"></td>
@@ -67,94 +79,120 @@
                     <td th:text="${passenger.gender}"></td>
                     <td th:text="${passenger.age}"></td>
                     <td>
-                        <!-- Trigger the Modal -->
                         <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPassengerModal"
-                            th:data-id="${passenger.id}" 
-                            th:data-first-name="${passenger.firstName}" 
-                            th:data-last-name="${passenger.lastName}" 
-                            th:data-email="${passenger.email}"
-                            th:data-phone-number="${passenger.phoneNumber}"
-                            th:data-gender="${passenger.gender}"
-                            th:data-age="${passenger.age}">
-                            Edit
+                            th:data-id="${passenger.id}" th:data-first-name="${passenger.firstName}"
+                            th:data-last-name="${passenger.lastName}" th:data-email="${passenger.email}"
+                            th:data-phone-number="${passenger.phoneNumber}" th:data-gender="${passenger.gender}" th:data-age="${passenger.age}">
+                            <i class="bi bi-pencil-square"></i> Edit
                         </button>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </div>
+             
+        
 
-    <!-- Modal for Editing Passenger -->
-    <div class="modal fade" id="editPassengerModal" tabindex="-1" aria-labelledby="editPassengerModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editPassengerModalLabel">Edit Passenger</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form th:action="@{/user/passengers/save/edited}" method="post" id="editPassengerForm">
-                        <input type="hidden" id="passengerId" name="id">
-                        <div class="mb-3">
-                            <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email">
-                        </div>
-                        <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">Phone Number</label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
-                        </div>
-                        <div class="mb-3">
-                            <label for="gender" class="form-label">Gender</label>
-                            <select class="form-control" id="gender" name="gender">
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="age" class="form-label">Age</label>
-                            <input type="number" class="form-control" id="age" name="age">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="submitEditPassenger">Save Changes</button>
-                </div>
+<!-- Modal for Editing Passenger -->
+<div class="modal fade" id="editPassengerModal" tabindex="-1" aria-labelledby="editPassengerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content text-dark">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPassengerModalLabel">Edit Passenger</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/user/passengers/save/edited}" method="post" id="editPassengerForm">
+                    <input type="hidden" id="passengerId" name="id">
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-control" id="gender" name="gender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="age" class="form-label">Age</label>
+                        <input type="number" class="form-control" id="age" name="age">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="submitEditPassenger">Save Changes</button>
             </div>
         </div>
     </div>
+</div>
+    <div th:if="${#lists.isEmpty(passengers)}" class="mb-3">
+        <!-- Only show Lottie animation if passenger list is empty -->
+        <div id="headerLottie" style="height: 200px;"></div>
+    </div>
 
-    <script>
-        // Pre-fill the modal with data
-        var myModal = new bootstrap.Modal(document.getElementById('editPassengerModal'), {});
-        var editButtons = document.querySelectorAll('.btn-warning');
-        editButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                // Get data attributes from the clicked button
-                document.getElementById('passengerId').value = button.getAttribute('data-id');
-                document.getElementById('firstName').value = button.getAttribute('data-first-name');
-                document.getElementById('lastName').value = button.getAttribute('data-last-name');
-                document.getElementById('email').value = button.getAttribute('data-email');
-                document.getElementById('phoneNumber').value = button.getAttribute('data-phone-number');
-                document.getElementById('gender').value = button.getAttribute('data-gender');
-                document.getElementById('age').value = button.getAttribute('data-age');
+<!-- JS for pre-fill and filter -->
+<script>
+    // Load animation only if headerLottie exists
+    const headerLottie = document.getElementById('headerLottie');
+    if (headerLottie) {
+        lottie.loadAnimation({
+            container: headerLottie,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets10.lottiefiles.com/packages/lf20_jcikwtux.json'
+        });
+    }
+
+    // Pre-fill modal
+    document.querySelectorAll('.btn-warning').forEach(function(button) {
+        button.addEventListener('click', function () {
+            document.getElementById('passengerId').value = button.getAttribute('data-id');
+            document.getElementById('firstName').value = button.getAttribute('data-first-name');
+            document.getElementById('lastName').value = button.getAttribute('data-last-name');
+            document.getElementById('email').value = button.getAttribute('data-email');
+            document.getElementById('phoneNumber').value = button.getAttribute('data-phone-number');
+            document.getElementById('gender').value = button.getAttribute('data-gender');
+            document.getElementById('age').value = button.getAttribute('data-age');
+        });
+    });
+
+    document.getElementById('submitEditPassenger').addEventListener('click', function () {
+        document.getElementById('editPassengerForm').submit();
+    });
+
+    // Filter functionality
+    const filters = document.querySelectorAll('.filter-input');
+    filters.forEach((input, index) => {
+        input.addEventListener('keyup', () => {
+            const value = input.value.toLowerCase();
+            const rows = document.querySelectorAll('#passengerTable tr');
+            rows.forEach(row => {
+                const cell = row.children[index];
+                if (cell.textContent.toLowerCase().includes(value)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             });
         });
+    });
+</script>
 
-        // Submit the form using the action attribute for form submission
-        document.getElementById('submitEditPassenger').addEventListener('click', function() {
-            var form = document.getElementById('editPassengerForm');
-            form.submit();  // Directly submit the form
-        });
-    </script>
 </body>
 </html>
