@@ -13,24 +13,27 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request,
+	                                    HttpServletResponse response,
+	                                    Authentication authentication) throws IOException, ServletException {
 
-        // Get the user's roles
-        boolean isAdmin = authentication.getAuthorities().stream()
-                                        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-        boolean isUser = authentication.getAuthorities().stream()
-                                       .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
+	    // Get the user's roles
+	    boolean isAdmin = authentication.getAuthorities().stream()
+	                                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+	    boolean isUser = authentication.getAuthorities().stream()
+	                                   .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_USER"));
 
-        // Redirect based on the role
-        if (isAdmin) {
-            response.sendRedirect("/admin");
-        } else if (isUser) {
-            response.sendRedirect("/user");
-        } else {
-            response.sendRedirect("/public");
-        }
-    }
+	    // Get context path ("" if ROOT.war, "/busapp" if deployed as /busapp)
+	    String contextPath = request.getContextPath();
+
+	    // Redirect based on the role
+	    if (isAdmin) {
+	        response.sendRedirect(contextPath + "/admin");
+	    } else if (isUser) {
+	        response.sendRedirect(contextPath + "/user");
+	    } else {
+	        response.sendRedirect(contextPath + "/public");
+	    }
+	}
 }

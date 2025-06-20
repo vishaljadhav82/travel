@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+    <!-- Optional Popper.js and Bootstrap JS (for interactive components like modals, tooltips, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body class="bg-light">
+
+    <!-- Navbar (Offcanvas) -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">Farmer Products</a>
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 id="offcanvasNavbarLabel" class="text-dark">Menu</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="#">Farmers</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-4 text-primary">Product List</h1>
+
+        <!-- Category Filter -->
+        <div class="mb-4">
+            <form action="/product/products" method="GET">
+                <div class="row">
+                    <div class="col-md-6">
+                        <select name="category" class="form-select" onchange="this.form.submit()">
+                            <option value="" selected>All Categories</option>
+                            <!-- Example categories. You can dynamically populate this from the backend -->
+                            <option value="Vegetables">Vegetables</option>
+                            <option value="Fruits">Fruits</option>
+                            <option value="Grains">Grains</option>
+                            <option value="Dairy">Dairy</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Product Cards -->
+        <div class="row">
+            <th:block th:each="product : ${productPage.content}">
+                <div class="col-md-4 mb-4">
+                    <!-- Product Card -->
+                    <div class="card shadow-lg border-0 rounded" style="background-color: #f8f9fa;">
+                        <img src="${product.productImageUrl}" class="card-img-top" alt="Product Image" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary" th:text="${product.productName}"></h5>
+                            <p class="card-text" th:text="${product.description}"></p>
+                            <p><strong>Price:</strong>  &#8377;<span th:text="${product.price}"></span></p>
+                            <p><strong>Quantity:</strong> <span th:text="${product.quantity}"></span></p>
+                            <p><strong>Availability:</strong> <span th:text="${product.availability}"></span></p>
+                            
+                            <!-- Contact the Farmer Section -->
+                            <div class="mt-3 p-3 border-top" style="background-color: #e9ecef;">
+                                <h6>Contact the Farmer:</h6>
+                                <!-- Farmer Name -->
+                                <p>
+                                    <i class="fas fa-user"></i> <strong>Name:</strong> <span th:text="${product.farmer.fullName}"></span>
+                                </p>
+
+                                <!-- Farmer Phone -->
+<p>
+    <i class="fas fa-phone-alt"></i> <strong>Phone:</strong> 
+    <!-- Phone Button -->
+    <a href="tel:${product.farmer.mobileNumber}" class="btn btn-outline-success btn-sm text-dark">
+        Call Now
+    </a>
+</p>
+
+<!-- Farmer Email -->
+<p>
+    <i class="fas fa-envelope"></i> <strong>Email:</strong>
+    <!-- Email Button -->
+    <a href="mailto:${product.farmer.email}" class="btn btn-outline-primary btn-sm text-dark">
+        Send Email
+    </a>
+</p>
+
+<!-- Social Media Link -->
+<p>
+    <i class="fas fa-share-alt"></i> <strong>Social Media:</strong>
+    <!-- Social Media Button -->
+    <a href="${product.farmer.socialMediaLink}" target="_blank" class="btn btn-outline-info btn-sm text-dark">
+        View Social Media
+    </a>
+</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${productPage.hasPrevious() ? '' : 'disabled'}">
+                    <a class="page-link bg-primary text-white" th:href="@{/product/products(page=0)}" tabindex="-1">First</a>
+                </li>
+                <li class="page-item" th:classappend="${productPage.hasPrevious() ? '' : 'disabled'}">
+                    <a class="page-link bg-primary text-white" th:href="@{/product/products(page=${productPage.number - 1})}">Previous</a>
+                </li>
+                <th:block th:each="pageNum : ${#numbers.sequence(0, productPage.totalPages - 1)}">
+                    <li class="page-item" th:classappend="${pageNum == productPage.number ? 'active' : ''}">
+                        <a class="page-link bg-primary text-white" th:href="@{/product/products(page=${pageNum})}" th:text="${pageNum + 1}"></a>
+                    </li>
+                </th:block>
+                <li class="page-item" th:classappend="${productPage.hasNext() ? '' : 'disabled'}">
+                    <a class="page-link bg-primary text-white" th:href="@{/product/products(page=${productPage.number + 1})}">Next</a>
+                </li>
+                <li class="page-item" th:classappend="${productPage.hasNext() ? '' : 'disabled'}">
+                    <a class="page-link bg-primary text-white" th:href="@{/product/products(page=${productPage.totalPages - 1})}">Last</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+</body>
+
+</html>

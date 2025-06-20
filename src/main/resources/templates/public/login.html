@@ -1,160 +1,164 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login</title>
+<title>Login</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" 
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" 
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!-- Lottie Player -->
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<!-- Lottie Player -->
+<script
+	src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-    <style>
-        .login-card {
-            max-width: 100%;
-            width: 100%;
-            padding: 20px;
-            border-radius: 10px;
-        }
+<style>
+.login-card {
+	max-width: 100%;
+	width: 100%;
+	padding: 20px;
+	border-radius: 10px;
+}
 
-        .form-control {
-            font-size: 1rem;
-            padding: 12px;
-        }
+.form-control {
+	font-size: 1rem;
+	padding: 12px;
+}
 
-        .btn {
-            padding: 12px;
-            font-size: 1.1rem;
-        }
+.btn {
+	padding: 12px;
+	font-size: 1.1rem;
+}
 
-        @media (max-width: 576px) {
-            h2 {
-                font-size: 1.5rem;
-            }
-            .form-label {
-                font-size: 1rem;
-            }
-            .login-card {
-                width: 100%;
-            }
-        }
+@media ( max-width : 576px) {
+	h2 {
+		font-size: 1.5rem;
+	}
+	.form-label {
+		font-size: 1rem;
+	}
+	.login-card {
+		width: 100%;
+	}
+}
 
-        .lottie-container {
-            max-width: 300px;
-            margin: 20px auto 0;
-        }
-    </style>
+.lottie-container {
+	max-width: 300px;
+	margin: 20px auto 0;
+}
+</style>
 </head>
-<body class="d-flex justify-content-center align-items-center min-vh-100 bg-primary">
+<body
+	class="d-flex justify-content-center align-items-center min-vh-100 bg-primary">
 
-<!-- Offcanvas Dark Navbar -->
-<nav class="navbar navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand fs-3 fw-bold" href="/user">TravelWith</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-            aria-controls="offcanvasNavbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+	<!-- Offcanvas Dark Navbar -->
+	<nav class="navbar navbar-dark bg-dark fixed-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/user}"><i
+				class="bi bi-house-door-fill"></i> Home</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+				aria-controls="offcanvasNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1"
+				id="offcanvasNavbar">
+				<div class="offcanvas-header">
+					<h5 class="offcanvas-title">
+						<i class="bi bi-list"></i> Menu
+					</h5>
+					<button type="button" class="btn-close btn-close-white"
+						data-bs-dismiss="offcanvas"></button>
+				</div>
+				<div class="offcanvas-body">
+					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/user/passengers}"><i class="bi bi-people"></i>
+								Passengers</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/user/passengers/form}"><i
+								class="bi bi-person-plus"></i> Add Passenger</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/public}"><i class="bi bi-search"></i> Trip
+								Search</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/user/booking/my-bookings}"><i
+								class="bi bi-journal-bookmark"></i> My Bookings</a></li>
+						<li class="nav-item"><a class="nav-link text-white"
+							th:href="@{/admin}"> <i class="bi bi-speedometer2 me-2"></i>
+								Admin Dashboard
+						</a></li>
 
-        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar"
-            aria-labelledby="offcanvasNavbarLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                    <li class="nav-item"><a class="nav-link" href="/public/search">Search Trips</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/signup">Sign up</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/user">Home</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
+								Sign Up</a></li>
+						<li class="nav-item"><a class="nav-link" href="/public/login"><i
+								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
+						<li class="nav-item">
+							<form th:action="@{/logout}" method="post">
+								<button class="btn btn-danger w-100" type="submit">
+									<i class="bi bi-box-arrow-right"></i> Log Out
+								</button>
+							</form>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<!-- Login Form Section -->
+	<div class="container mt-5 pt-5">
+		<div class="row justify-content-center">
+			<div class="col-12 col-sm-10 col-md-8 col-lg-6">
+				<div class="card shadow-lg login-card">
+					<h2 class="text-center text-primary">Login</h2>
 
-                    <!-- Stops Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-signpost"></i> Stops
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" th:href="@{/admin/stops}"><i class="bi bi-list-ul me-2"></i> View Stops</a></li>
-                            <li><a class="dropdown-item" th:href="@{/admin/stops/add}"><i class="bi bi-plus-circle me-2"></i> Add Stop</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i> Export Stops</a></li>
-                        </ul>
-                    </li>
+					<!-- Error Messages -->
+					<div th:if="${param.error}" class="alert alert-danger">Invalid
+						username or password!</div>
+					<div th:if="${param.logout}" class="alert alert-success">You
+						have been logged out successfully.</div>
 
-                    <li class="nav-item"><a class="nav-link" href="/admin/buses">Buses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/admin/buses/new">Add Bus</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/user/passengers"><i class="bi bi-people-fill me-2"></i> Passengers</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/user/passengers/form"><i class="bi bi-person-plus-fill me-2"></i> Add Passenger</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/search"><i class="bi bi-search me-2"></i> Trip Search</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/signup"><i class="bi bi-person-badge-fill me-2"></i> Sign up</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/public/login"><i class="bi bi-box-arrow-in-right me-2"></i> Log in</a></li>
-                    <li class="nav-item mt-2">
-                        <form th:action="@{/logout}" method="post">
-                            <button class="btn btn-danger w-100" type="submit">
-                                <i class="bi bi-box-arrow-right me-2"></i> Log out
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+					<!-- Login Form -->
+					<form th:action="@{/login}" method="post">
+						<div class="mb-3">
+							<label class="form-label">Username:</label> <input type="text"
+								name="username" class="form-control" required autocomplete="off">
+						</div>
 
-    <!-- Login Form Section -->
-    <div class="container mt-5 pt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
-                <div class="card shadow-lg login-card">
-                    <h2 class="text-center text-primary">Login</h2>
+						<div class="mb-3">
+							<label class="form-label">Password:</label> <input
+								type="password" name="password" class="form-control" required
+								autocomplete="off">
+						</div>
 
-                    <!-- Error Messages -->
-                    <div th:if="${param.error}" class="alert alert-danger">Invalid username or password!</div>
-                    <div th:if="${param.logout}" class="alert alert-success">You have been logged out successfully.</div>
+						<button type="submit" class="btn btn-primary w-100">Login</button>
+					</form>
 
-                    <!-- Login Form -->
-                    <form th:action="@{/login}" method="post">
-                        <div class="mb-3">
-                            <label class="form-label">Username:</label>
-                            <input type="text" name="username" class="form-control" required autocomplete="off">
-                        </div>
+					<!-- Registration Link -->
+					<div class="text-center mt-3">
+						<span>Not registered?</span> <a th:href="@{/public/signup}"
+							class="text-primary">Register Now</a>
+					</div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Password:</label>
-                            <input type="password" name="password" class="form-control" required autocomplete="off">
-                        </div>
+					<!-- Lottie Animation -->
+					<div class="lottie-container text-center">
+						<lottie-player
+							src="https://assets4.lottiefiles.com/packages/lf20_gjmecwii.json"
+							background="transparent" speed="1"
+							style="width: 100%; height: 200px;" loop autoplay>
+						</lottie-player>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
-                    </form>
-
-                    <!-- Registration Link -->
-                    <div class="text-center mt-3">
-                        <span>Not registered?</span>
-                        <a href="/public/signup" class="text-primary">Register Now</a>
-                    </div>
-
-                    <!-- Lottie Animation -->
-                    <div class="lottie-container text-center">
-                        <lottie-player
-                            src="https://assets4.lottiefiles.com/packages/lf20_gjmecwii.json"
-                            background="transparent"
-                            speed="1"
-                            style="width: 100%; height: 200px;"
-                            loop
-                            autoplay>
-                        </lottie-player>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

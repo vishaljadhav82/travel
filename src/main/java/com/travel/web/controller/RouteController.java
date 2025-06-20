@@ -20,7 +20,7 @@ public class RouteController {
     @Autowired
     private RouteService routeService;
 
-    @GetMapping
+    @GetMapping("/list")
     public String listRoutes(Model model) {
         model.addAttribute("routes", routeService.getAllRoutes());
         return "routes/list";

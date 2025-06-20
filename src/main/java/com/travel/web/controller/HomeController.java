@@ -4,9 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,19 +19,23 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.travel.web.config.Role;
 import com.travel.web.model.Booking;
-import com.travel.web.model.Route;
 import com.travel.web.model.ScheduleTrip;
 import com.travel.web.model.Stop;
 import com.travel.web.model.TripSearchCriteria;
 import com.travel.web.model.User;
 import com.travel.web.repository.UserRepository;
 import com.travel.web.service.BookingService;
+import com.travel.web.service.EmailService;
 import com.travel.web.service.ScheduleTripService;
 import com.travel.web.service.StopService;
 
 @Controller
 @RequestMapping("/public")
 public class HomeController {
+	
+    @Autowired
+    private EmailService emailService;
+
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -60,6 +61,12 @@ public class HomeController {
         return "public/t-search";
     }
     
+    @GetMapping("/send-otp")
+    @ResponseBody
+    public String sendOtp(@RequestParam String email) {
+        String otp = emailService.sendOTP(email);
+        return "OTP sent to " + email;
+    }
 
 
     @GetMapping("/login")

@@ -134,14 +134,14 @@
         <p>Please choose an option to proceed:</p>
         
         <div class="button-container">
-            <a href="/public/signup" class="sign-up-button" id="signUpButton">Sign Up</a>
+            <a th:href="@{/public/signup}" class="sign-up-button" id="signUpButton">Sign Up</a>
         </div>
         
-                    <a href="/public/login" class="log-in-button" id="logInButton">Log In</a>
+                    <a th:href="@{/public/login}" class="log-in-button" id="logInButton">Log In</a>
        
     </div>
 
-    <a href="/" class="back-link" id="back-link">Back to Home</a>
+    <a th:href="@{/}" class="back-link" id="back-link">Back to Home</a>
 
     <script>
         // GSAP Animation for the Welcome Container
