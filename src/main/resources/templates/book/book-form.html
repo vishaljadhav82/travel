@@ -54,7 +54,7 @@
                 tripId: document.getElementById("tripId").value
             };
 
-            fetch('http://3.111.38.190:8080/web-0.0.1-SNAPSHOT/user/booking/save', {
+            fetch('http://localhost:8080/user/booking/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bookingData)
@@ -72,7 +72,7 @@
                     description: "Trip Payment",
                     order_id: data.transactionId,
                     receipt: data.passenger.email,
-                    callback_url: "http://3.111.38.190:8080/web-0.0.1-SNAPSHOT/public/handle-payment-callback",
+                    callback_url: "http://localhost:8080/public/handle-payment-callback",
                     handler: function (response) {
                         var paymentDetails = {
                             bookingId: bookingId_,
@@ -126,14 +126,14 @@
         }
 
         function processPaymentResponse(paymentResponse) {
-            fetch('http://3.111.38.190:8080/web-0.0.1-SNAPSHOT/user/booking/handle-payment-callback', {
+            fetch('http://localhost:8080/user/booking/handle-payment-callback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(paymentResponse)
             })
             .then(response => response.json())
             .then(data => {
-                window.location.href = "http://3.111.38.190:8080/web-0.0.1-SNAPSHOT/public/search";
+                window.location.href = "http://localhost:8080/public/search";
             })
             .catch(console.error);
         }

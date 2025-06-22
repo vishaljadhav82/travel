@@ -1,108 +1,75 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Bus List</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Bus List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 </head>
+
 <body class="bg-dark text-white">
 
 <nav class="navbar navbar-dark bg-dark fixed-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" th:href="@{/user}"><i
-				class="bi bi-house-door-fill"></i> Home</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-				aria-controls="offcanvasNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1"
-				id="offcanvasNavbar">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title">
-						<i class="bi bi-list"></i> Menu
-					</h5>
-					<button type="button" class="btn-close btn-close-white"
-						data-bs-dismiss="offcanvas"></button>
-				</div>
-				<div class="offcanvas-body">
-					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers}"><i class="bi bi-people"></i>
-								Passengers</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers/form}"><i
-								class="bi bi-person-plus"></i> Add Passenger</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public}"><i class="bi bi-search"></i> Trip
-								Search</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/booking/my-bookings}"><i
-								class="bi bi-journal-bookmark"></i> My Bookings</a></li>
-						<li class="nav-item"><a class="nav-link text-white"
-							th:href="@{/admin}"> <i class="bi bi-speedometer2 me-2"></i>
-								Admin Dashboard
-						</a></li>
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/user}"><i class="bi bi-house-door-fill"></i> Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end text-bg-dark" id="offcanvasNavbar">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title"><i class="bi bi-list"></i> Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav flex-grow-1 pe-3">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin}"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
 
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
-								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" href="/public/login"><i
-								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
-						<li class="nav-item">
-							<form th:action="@{/logout}" method="post">
-								<button class="btn btn-danger w-100" type="submit">
-									<i class="bi bi-box-arrow-right"></i> Log Out
-								</button>
-							</form>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav>
+<div class="container mt-5 pt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-bus-front"></i> Bus List</h2>
+        <a th:href="@{/admin/buses/new}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add New Bus</a>
+    </div>
 
-	<div class="container mt-5 pt-5">
-		<h2 class="mb-4">Bus List</h2>
-		<table class="table table-dark table-bordered">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Bus Number</th>
-					<th>Driver Name</th>
-					<th>Capacity</th>
-					<th>Available</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="bus : ${buses}">
-					<td th:text="${bus.id}"></td>
-					<td th:text="${bus.busNumber}"></td>
-					<td th:text="${bus.driverName}"></td>
-					<td th:text="${bus.capacity}"></td>
-					<td th:text="${bus.available} ? 'Yes' : 'No'"></td>
-				</tr>
-			</tbody>
-		</table>
-		<!-- No Trips Found -->
-		<div th:if="${#lists.isEmpty(buses)}" class="text-center my-5">
-			<div class="d-flex justify-content-center">
-				<!-- 403 Forbidden -->
-				<lottie-player
-					src="https://assets5.lottiefiles.com/packages/lf20_i2eyukor.json"
-					background="transparent" speed="1"
-					style="width: 100%; height: 300px;" loop autoplay>
-				</lottie-player>
+    <div class="table-responsive">
+        <table class="table table-dark table-hover table-bordered text-center align-middle mb-0">
+            <thead class="table-light text-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Bus Number</th>
+                    <th>Driver Name</th>
+                    <th>Capacity</th>
+                    <th>Available</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="bus : ${buses}">
+                    <td th:text="${bus.id}"></td>
+                    <td th:text="${bus.busNumber}"></td>
+                    <td th:text="${bus.driverName}"></td>
+                    <td th:text="${bus.capacity}"></td>
+                    <td th:text="${bus.available} ? 'Yes' : 'No'"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
-			</div>
-			<h4 class="text-muted mt-3">No Trips Available</h4>
-		</div>
+    <!-- No Buses Found -->
+    <div th:if="${#lists.isEmpty(buses)}" class="text-center my-5">
+        <div class="d-flex justify-content-center">
+            <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_i2eyukor.json"
+                           background="transparent" speed="1"
+                           style="width: 100%; height: 300px;" loop autoplay>
+            </lottie-player>
+        </div>
+        <h4 class="text-muted mt-3">No Buses Available</h4>
+    </div>
+</div>
 
-	</div>
-
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

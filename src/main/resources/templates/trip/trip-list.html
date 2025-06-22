@@ -2,257 +2,257 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Scheduled Trips</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scheduled Trips</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Bootstrap CSS -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
-	rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-<!-- DataTables CSS -->
-<link rel="stylesheet"
-	href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+    <!-- Glassmorphism Styles -->
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center fixed;
+            background-size: cover;
+            backdrop-filter: blur(8px);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .glass-input::placeholder {
+            color: #ddd;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .badge {
+            font-size: 0.9rem;
+        }
+    </style>
 </head>
 
-<body class="bg-light">
+<body>
 
-	<!-- ✅ Offcanvas Dark Navbar -->
-		<nav class="navbar navbar-dark bg-dark fixed-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" th:href="@{/user}"><i
-				class="bi bi-house-door-fill"></i> Home</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-				aria-controls="offcanvasNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1"
-				id="offcanvasNavbar">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title">
-						<i class="bi bi-list"></i> Menu
-					</h5>
-					<button type="button" class="btn-close btn-close-white"
-						data-bs-dismiss="offcanvas"></button>
-				</div>
-				<div class="offcanvas-body">
-					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers}"><i class="bi bi-people"></i>
-								Passengers</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers/form}"><i
-								class="bi bi-person-plus"></i> Add Passenger</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public}"><i class="bi bi-search"></i> Trip
-								Search</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/booking/my-bookings}"><i
-								class="bi bi-journal-bookmark"></i> My Bookings</a></li>
-						<li class="nav-item"><a class="nav-link text-white"
-							th:href="@{/admin}"> <i class="bi bi-speedometer2 me-2"></i>
-								Admin Dashboard
-						</a></li>
+<!-- ✅ Offcanvas Dark Navbar -->
+<nav class="navbar navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/user}"><i class="bi bi-house-door-fill"></i> Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title"><i class="bi bi-list"></i> Menu</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body">
+                <!-- Same navbar links here -->
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+    <li class="nav-item"><a class="nav-link" th:href="@{/user/passengers}"><i class="bi bi-people"></i> Passengers</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/user/passengers/form}"><i class="bi bi-person-plus"></i> Add Passenger</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/public}"><i class="bi bi-search"></i> Trip Search</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/user/booking/my-bookings}"><i class="bi bi-journal-bookmark"></i> My Bookings</a></li>
+    <li class="nav-item"><a class="nav-link text-white" th:href="@{/admin}"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" th:href="@{/public/signup}"><i class="bi bi-person-add"></i> Sign Up</a></li>
+    <li class="nav-item"><a class="nav-link" href="/public/login"><i class="bi bi-box-arrow-in-right"></i> Log In</a></li>
+    <li class="nav-item">
+        <form th:action="@{/logout}" method="post">
+            <button class="btn btn-danger w-100" type="submit">
+                <i class="bi bi-box-arrow-right"></i> Log Out
+            </button>
+        </form>
+    </li>
+</ul>
+                
+                <!-- ... (your links unchanged) -->
+            </div>
+        </div>
+    </div>
+</nav>
 
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
-								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" href="/public/login"><i
-								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
-						<li class="nav-item">
-							<form th:action="@{/logout}" method="post">
-								<button class="btn btn-danger w-100" type="submit">
-									<i class="bi bi-box-arrow-right"></i> Log Out
-								</button>
-							</form>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav>
+<!-- ✅ Page Content -->
+<div class="container mt-5 pt-5">
+    <div class="glass-card">
+        <h2 class="mb-4">Scheduled Trips</h2>
+        <a th:href="@{/admin/scheduleTrip/create}" class="btn btn-primary mb-3">
+            <i class="bi bi-plus-circle"></i> Create New Trip
+        </a>
+        <div class="d-flex justify-content-end mb-2">
+            <button class="btn btn-secondary btn-sm" onclick="resetFilters()">
+                <i class="bi bi-arrow-clockwise"></i> Reset Filters
+            </button>
+        </div>
 
-	<!-- ✅ Page Content -->
-	<div class="container mt-5 pt-5">
-		<div class="card shadow">
-			<div class="card-body">
-				<h2 class="card-title mb-4">Scheduled Trips</h2>
-				<a th:href="@{/admin/scheduleTrip/create}" class="btn btn-primary mb-3">Create
-					New Trip</a>
-				<div class="d-flex justify-content-end mb-2">
-					<button class="btn btn-secondary btn-sm" onclick="resetFilters()">
-						<i class="bi bi-arrow-clockwise"></i> Reset Filters
-					</button>
-				</div>
+        <div class="table-responsive">
+            <table id="tripsTable" class="table table-bordered table-striped table-hover text-center align-middle text-white">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Bus</th>
+                        <th>Route</th>
+                        <th>Total Seats</th>
+                        <th>Booked Seats</th>
+                        <th>Available Seats</th>
+                        <th>Cost/Km</th>
+                        <th>Distance Km</th>
+                        <th>Trip Date</th>
+                        <th>Trip Time</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    <!-- Filter Inputs -->
+                    <tr>
+                        <th><input type="text" class="form-control form-control-sm glass-input" onkeyup="filterTable(0)" placeholder="Search ID"></th>
+                        <th><input type="text" class="form-control form-control-sm glass-input" onkeyup="filterTable(1)" placeholder="Search Bus"></th>
+                        <th><input type="text" class="form-control form-control-sm glass-input" onkeyup="filterTable(2)" placeholder="Search Route"></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th><input type="date" class="form-control form-control-sm glass-input" oninput="filterTable(8)"></th>
+                        <th><input type="time" class="form-control form-control-sm glass-input" oninput="filterTable(9)"></th>
+                        <th>
+                            <select class="form-select form-select-sm glass-input" onchange="filterTable(10)">
+                                <option value="">All</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Not Completed">Not Completed</option>
+                            </select>
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="trip : ${trips}">
+                        <td th:text="${trip.id}"></td>
+                        <td th:text="${trip.bus.busNumber}"></td>
+                        <td th:text="${trip.route.routeName}"></td>
+                        <td th:text="${trip.bus.capacity}"></td>
+                        <td th:text="${trip.bookedSeats}"></td>
+                        <td th:text="${trip.availableSeats}"></td>
+                        <td th:text="${trip.costPerKm}"></td>
+                        <td th:text="${trip.route.totalDistance}"></td>
+                        <td th:text="${trip.tripDate}"></td>
+                        <td th:text="${trip.tripTime}"></td>
+                        <td>
+                            <span th:if="${trip.tripEnd == 0}" class="badge bg-warning text-dark">Not Completed</span>
+                            <span th:if="${trip.tripEnd == 1}" class="badge bg-success">Completed</span>
+                        </td>
+                        <td>
+                            <a th:href="@{/admin/scheduleTrip/edit/{id}(id=${trip.id})}" class="btn btn-sm btn-warning">Edit</a>
+                            <button class="btn btn-sm btn-danger" th:onclick="'confirmDelete(' + ${trip.id} + ')'">
+                                <i class="bi bi-trash"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-				<div class="table-responsive">
-					<table id="tripsTable"
-						class="table table-bordered table-striped table-hover text-center align-middle">
-						<thead class="table-dark">
-							<tr>
-								<th>ID</th>
-								<th>Bus</th>
-								<th>Route</th>
-								<th>Total Seats</th>
-								<th>Booked Seats</th>
-								<th>Available Seats</th>
-								<th>Cost/Km</th>
-								<th>Distance Km</th>
-								<th>Trip Date</th>
-								<th>Trip Time</th>
-								<th>Status</th>
-								<th>Actions</th>
-							</tr>
+            <!-- No Trips Found -->
+            <div th:if="${#lists.isEmpty(trips)}" class="text-center my-5">
+                <div class="d-flex justify-content-center">
+                    <lottie-player 
+                        src="https://assets5.lottiefiles.com/packages/lf20_i2eyukor.json"
+                        background="transparent" speed="1"
+                        style="width: 100%; height: 300px;" loop autoplay>
+                    </lottie-player>
+                </div>
+                <h4 class="text-light mt-3">No Trips Available</h4>
+            </div>
 
-							<!-- 🔍 Filter Inputs -->
-							<tr>
-								<th><input type="text" class="form-control form-control-sm"
-									onkeyup="filterTable(0)" placeholder="Search ID"></th>
-								<th><input type="text" class="form-control form-control-sm"
-									onkeyup="filterTable(1)" placeholder="Search Bus"></th>
-								<th><input type="text" class="form-control form-control-sm"
-									onkeyup="filterTable(2)" placeholder="Search Route"></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th><input type="date" class="form-control form-control-sm"
-									oninput="filterTable(8)"></th>
-								<th><input type="time" class="form-control form-control-sm"
-									oninput="filterTable(9)"></th>
-								<th><select class="form-select form-select-sm"
-									onchange="filterTable(10)">
-										<option value="">All</option>
-										<option value="Completed">Completed</option>
-										<option value="Not Completed">Not Completed</option>
-								</select></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="trip : ${trips}">
-								<td th:text="${trip.id}"></td>
-								<td th:text="${trip.bus.busNumber}"></td>
-								<td th:text="${trip.route.routeName}"></td>
-								<td th:text="${trip.bus.capacity}"></td>
-								<td th:text="${trip.bookedSeats}"></td>
-								<td th:text="${trip.availableSeats}"></td>
-								<td th:text="${trip.costPerKm}"></td>
-								<td th:text="${trip.route.totalDistance}"></td>
-								<td th:text="${trip.tripDate}"></td>
-								<td th:text="${trip.tripTime}"></td>
-								<td><span th:if="${trip.tripEnd == 0}"
-									class="badge bg-warning text-dark">Not Completed</span> <span
-									th:if="${trip.tripEnd == 1}" class="badge bg-success">Completed</span>
-								</td>
-								<td><a
-									th:href="@{/admin/scheduleTrip/edit/{id}(id=${trip.id})}"
-									class="btn btn-sm btn-warning">Edit</a>
-									<button class="btn btn-sm btn-danger"
-										th:onclick="'confirmDelete(' + ${trip.id} + ')'">
-										<i class="bi bi-trash"></i> Delete
-									</button></td>
-							</tr>
-						</tbody>
-					</table>
-					<!-- No Trips Found -->
-		<div th:if="${#lists.isEmpty(trips)}" class="text-center my-5">
-			<div class="d-flex justify-content-center">
-				<!-- 403 Forbidden -->
-				<lottie-player 
-					src="https://assets5.lottiefiles.com/packages/lf20_i2eyukor.json"
-					background="transparent" speed="1"
-					style="width: 100%; height: 300px;" loop autoplay>
-				</lottie-player>
+        </div>
+    </div>
+</div>
 
-			</div>
-			<h4 class="text-muted mt-3">No Trips Available</h4>
-		</div>
+<!-- ✅ Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-					
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- ✅ Scripts -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-	<!-- jQuery and DataTables -->
-	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-	<script
-		src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
-	<!-- 🔍 Filter & Delete Scripts -->
-	<script>
-        $(document).ready(function () {
-            $('#tripsTable').DataTable({
-                "order": [],
-                "paging": true,
-                "lengthChange": true,
-                "searching": false, // we use custom filters
-                "ordering": true,
-                "info": true,
-                "autoWidth": false
-            });
+<!-- Filter & Delete Scripts -->
+<script>
+    $(document).ready(function () {
+        $('#tripsTable').DataTable({
+            "order": [],
+            "paging": true,
+            "lengthChange": true,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
         });
+    });
 
-        function filterTable(colIndex) {
-            const input = document.querySelectorAll("thead tr:nth-child(2)")[0].children[colIndex].querySelector('input, select');
-            const filter = input.value.toLowerCase();
-            const rows = document.querySelectorAll("tbody tr");
+    function filterTable(colIndex) {
+        const input = document.querySelectorAll("thead tr:nth-child(2)")[0].children[colIndex].querySelector('input, select');
+        const filter = input.value.toLowerCase();
+        const rows = document.querySelectorAll("tbody tr");
 
-            rows.forEach(row => {
-                const cell = row.children[colIndex];
-                if (!cell) return;
+        rows.forEach(row => {
+            const cell = row.children[colIndex];
+            if (!cell) return;
 
-                const text = cell.textContent.toLowerCase();
-                if (text.includes(filter) || filter === '') {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            });
+            const text = cell.textContent.toLowerCase();
+            row.style.display = (text.includes(filter) || filter === '') ? "" : "none";
+        });
+    }
+
+    function resetFilters() {
+        const filterRow = document.querySelectorAll("thead tr:nth-child(2)")[0].children;
+        for (let i = 0; i < filterRow.length; i++) {
+            const input = filterRow[i].querySelector('input, select');
+            if (input) input.value = '';
         }
+        document.querySelectorAll("tbody tr").forEach(row => {
+            row.style.display = "";
+        });
+    }
 
-        function resetFilters() {
-            const filterRow = document.querySelectorAll("thead tr:nth-child(2)")[0].children;
-            for (let i = 0; i < filterRow.length; i++) {
-                const input = filterRow[i].querySelector('input, select');
-                if (input) input.value = '';
+    function confirmDelete(tripId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This trip will be permanently deleted.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `/admin/scheduleTrip/delete/${tripId}`;
             }
-            document.querySelectorAll("tbody tr").forEach(row => {
-                row.style.display = "";
-            });
-        }
+        });
+    }
+</script>
 
-        function confirmDelete(tripId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "This trip will be permanently deleted.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = `/admin/scheduleTrip/delete/${tripId}`;
-                }
-            });
-        }
-    </script>
 </body>
 
 </html>

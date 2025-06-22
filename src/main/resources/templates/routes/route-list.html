@@ -84,8 +84,8 @@
                     <td th:text="${route.totalDistance}"></td>
                     <td th:text="${route.totalTime}"></td>
                     <td>
-                        <a th:href="@{'/admin/route/edit/' + ${route.id}}" class="btn btn-primary btn-sm">Edit</a>
-                        <a th:href="@{'/admin/route/delete/' + ${route.id}}" class="btn btn-danger btn-sm">Delete</a>
+                        <a th:href="@{'/admin/routes/edit/' + ${route.id}}" class="btn btn-primary btn-sm">Edit</a>
+                        <a th:href="@{'/admin/routes/delete/' + ${route.id}}" class="btn btn-danger btn-sm">Delete</a>
                         <a th:href="@{'/admin/stops/' + ${route.id}}" class="btn btn-warning btn-sm">See Stops</a>
                     </td>
                 </tr>

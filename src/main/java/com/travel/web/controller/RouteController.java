@@ -35,7 +35,7 @@ public class RouteController {
     @PostMapping("/create")
     public String createRoute(@ModelAttribute Route route) {
         routeService.createRoute(route);
-        return "redirect:/routes";
+        return "redirect:/admin/routes/list";
     }
 
     @GetMapping("/edit/{id}")
@@ -48,13 +48,13 @@ public class RouteController {
     @PostMapping("/edit/{id}")
     public String updateRoute(@PathVariable Long id, @ModelAttribute Route route) {
         routeService.updateRoute(id, route);
-        return "redirect:/routes";
+        return "redirect:/admin/routes/list";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteRoute(@PathVariable Long id) {
         routeService.deleteRoute(id);
-        return "redirect:/routes";
+        return "redirect:/admin/routes/list";
     }
 
     @GetMapping("/{routeId}/stops")
@@ -64,19 +64,20 @@ public class RouteController {
         model.addAttribute("route", route);
         model.addAttribute("stops", stops);
         model.addAttribute("stop", new Stop());
-        return "routes/stops";
+        return "stop/stops";
     }
 
     @PostMapping("/{routeId}/stops")
     public String addStop(@PathVariable Long routeId, @ModelAttribute Stop stop) {
+    	System.out.println("Inside stop add");
         routeService.addStopToRoute(routeId, stop);
-        return "redirect:/routes/" + routeId + "/stops";
+        return "redirect:/admin/routes/" + routeId + "/stops";
     }
 
     @GetMapping("/{routeId}/stops/delete/{stopId}")
     public String deleteStop(@PathVariable Long routeId, @PathVariable Long stopId) {
         routeService.deleteStop(stopId);
-        return "redirect:/routes/" + routeId + "/stops";
+        return "redirect:/admin/routes/" + routeId + "/stops";
     }
     
 }

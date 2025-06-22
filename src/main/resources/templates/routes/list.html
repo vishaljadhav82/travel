@@ -91,9 +91,9 @@
                     <td th:text="${route.totalDistance}"></td>
                     <td th:text="${route.totalTime}"></td>
                     <td>
-                        <a class="btn btn-sm btn-primary me-1" th:href="@{|/routes/edit/${route.id}|}">Edit</a>
-                        <a class="btn btn-sm btn-danger me-1" th:href="@{|/routes/delete/${route.id}|}" onclick="return confirm('Delete this route?')">Delete</a>
-                        <a class="btn btn-sm btn-info" th:href="@{|/routes/${route.id}/stops|}">View Stops</a>
+                        <a class="btn btn-sm btn-primary me-1" th:href="@{|/admin/routes/edit/${route.id}|}">Edit</a>
+                        <a class="btn btn-sm btn-danger me-1" th:href="@{|/admin/routes/delete/${route.id}|}" onclick="return confirm('Delete this route?')">Delete</a>
+                        <a class="btn btn-sm btn-info" th:href="@{|/admin/routes/${route.id}/stops|}">View Stops</a>
                     </td>
                 </tr>
             </tbody>

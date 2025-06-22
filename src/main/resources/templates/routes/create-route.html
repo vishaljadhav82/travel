@@ -74,7 +74,7 @@
                 <div class="card-body">
                     <h3 class="card-title text-center mb-4" th:text="${route.id} ? 'Update Route' : 'Create New Route'"></h3>
 
-                    <form th:action="${route.id} ? @{/admin/route/update/{id}(id=${route.id})} : @{/admin/route/create}" th:object="${route}" method="post">
+                    <form th:action="${route.id} ? @{/admin/routes/update/{id}(id=${route.id})} : @{/admin/routes/create}" th:object="${route}" method="post">
                         <input type="hidden" th:field="*{id}" />
 
                         <div class="mb-3">
