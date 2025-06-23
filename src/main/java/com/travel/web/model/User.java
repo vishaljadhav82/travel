@@ -1,24 +1,10 @@
 package com.travel.web.model;
 
-import java.util.List;
-
 import com.travel.web.config.Role;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -28,90 +14,99 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 50, message = "Username must be between 3 and 50 characters")
     @Column(name = "username", unique = true, nullable = false)
-    private String username; // Unique username for the user
+    private String username;
 
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
     @Column(name = "password", nullable = false)
-    private String password; // User password
+    private String password;
 
-    @Column(name = "email", unique = true, nullable = false)
-    private String email; // User email address
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email format")
+    @Column(name = "email", nullable = false)
+    private String email;
 
-    @Column(name = "phone_number", unique = true, nullable = false)
-    private String phoneNumber; // User phone number
+    @NotBlank(message = "Phone number is required")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must be 10 digits")
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role; // User role (USER or ADMIN)
+    private Role role;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Passenger> passengers; // List of passengers associated with the user
-    
+    private List<Passenger> passengers;
+
+    @ElementCollection
     private List<Long> booking;
 
-	public Long getId() {
-		return id;
-	}
+    // Getters & Setters
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public Role getRole() {
-		return role;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public void setRole(Role role) {
-		this.role = role;
-	}
+    public Role getRole() {
+        return role;
+    }
 
-	public List<Passenger> getPassengers() {
-		return passengers;
-	}
+    public void setRole(Role role) {
+        this.role = role;
+    }
 
-	public void setPassengers(List<Passenger> passengers) {
-		this.passengers = passengers;
-	}
+    public List<Passenger> getPassengers() {
+        return passengers;
+    }
 
-	public List<Long> getBooking() {
-		return booking;
-	}
+    public void setPassengers(List<Passenger> passengers) {
+        this.passengers = passengers;
+    }
 
-	public void setBooking(List<Long> booking) {
-		this.booking = booking;
-	}
-    
-   
+    public List<Long> getBooking() {
+        return booking;
+    }
+
+    public void setBooking(List<Long> booking) {
+        this.booking = booking;
+    }
 }

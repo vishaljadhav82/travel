@@ -54,7 +54,7 @@
                 tripId: document.getElementById("tripId").value
             };
 
-            fetch('http://localhost:8080/user/booking/save', {
+            fetch('http://13.235.71.15:8080/web-0.0.1-SNAPSHOT/user/booking/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bookingData)
@@ -72,7 +72,7 @@
                     description: "Trip Payment",
                     order_id: data.transactionId,
                     receipt: data.passenger.email,
-                    callback_url: "http://localhost:8080/public/handle-payment-callback",
+                   // callback_url: "http://localhost:8080/public/handle-payment-callback",
                     handler: function (response) {
                         var paymentDetails = {
                             bookingId: bookingId_,
@@ -100,6 +100,7 @@
         }
 
         function createPaymentPopup(paymentDetails) {
+        	processPaymentResponse(paymentDetails);
             const popup = document.createElement('div');
             popup.className = 'modal fade';
             popup.id = 'paymentModal';
@@ -126,14 +127,14 @@
         }
 
         function processPaymentResponse(paymentResponse) {
-            fetch('http://localhost:8080/user/booking/handle-payment-callback', {
+            fetch('http://13.235.71.15:8080/web-0.0.1-SNAPSHOT/public/handle-payment-callback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(paymentResponse)
             })
             .then(response => response.json())
             .then(data => {
-                window.location.href = "http://localhost:8080/public/search";
+                window.location.href = "http://13.235.71.15:8080/web-0.0.1-SNAPSHOT/public";
             })
             .catch(console.error);
         }
@@ -181,7 +182,7 @@
 						<li class="nav-item"><a class="nav-link"
 							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
 								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" href="/public/login"><i
+						<li class="nav-item"><a class="nav-link" th:href="@{/public/login}"><i
 								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
 						<li class="nav-item">
 							<form th:action="@{/logout}" method="post">

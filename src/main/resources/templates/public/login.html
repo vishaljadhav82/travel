@@ -4,6 +4,8 @@
 <title>Login</title>
 
 <!-- Bootstrap CSS -->
+<link rel="icon" type="image/png" th:href="@{/img/favicon.png}" />
+
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
@@ -81,9 +83,8 @@
 						<li class="nav-item"><a class="nav-link"
 							th:href="@{/user/passengers/form}"><i
 								class="bi bi-person-plus"></i> Add Passenger</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public}"><i class="bi bi-search"></i> Trip
-								Search</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/public}"><i
+								class="bi bi-search"></i> Trip Search</a></li>
 						<li class="nav-item"><a class="nav-link"
 							th:href="@{/user/booking/my-bookings}"><i
 								class="bi bi-journal-bookmark"></i> My Bookings</a></li>
@@ -95,7 +96,7 @@
 						<li class="nav-item"><a class="nav-link"
 							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
 								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" href="/public/login"><i
+						<li class="nav-item"><a class="nav-link" th:href="@{/public/login}"><i
 								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
 						<li class="nav-item">
 							<form th:action="@{/logout}" method="post">
@@ -137,6 +138,13 @@
 
 						<button type="submit" class="btn btn-primary w-100">Login</button>
 					</form>
+
+					<!-- Forget Password Link -->
+					<div class="text-center mt-3">
+						<a th:href="@{/public/forgot-password}" class="text-danger">Forgot
+							Password?</a>
+					</div>
+
 
 					<!-- Registration Link -->
 					<div class="text-center mt-3">

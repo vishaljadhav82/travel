@@ -1,142 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced User Registration</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Registration</title>
+    <link rel="icon" type="image/png" th:href="@{/img/favicon.png}" />
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.4/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-    <style>
-        body {
-            padding-top: 70px;
-        }
-        .error-message {
-            font-size: 0.75rem;
-            color: red;
-        }
-        .lottie-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        @media (max-width: 767px) {
-            .lottie-box {
-                margin-top: 20px;
-            }
-        }
-    </style>
 </head>
 <body>
+
+<!-- Navbar -->
 <nav class="navbar navbar-dark bg-dark fixed-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" th:href="@{/user}"><i
-				class="bi bi-house-door-fill"></i> Home</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-				aria-controls="offcanvasNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1"
-				id="offcanvasNavbar">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title">
-						<i class="bi bi-list"></i> Menu
-					</h5>
-					<button type="button" class="btn-close btn-close-white"
-						data-bs-dismiss="offcanvas"></button>
-				</div>
-				<div class="offcanvas-body">
-					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers}"><i class="bi bi-people"></i>
-								Passengers</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers/form}"><i
-								class="bi bi-person-plus"></i> Add Passenger</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public}"><i class="bi bi-search"></i> Trip
-								Search</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/booking/my-bookings}"><i
-								class="bi bi-journal-bookmark"></i> My Bookings</a></li>
-						<li class="nav-item"><a class="nav-link text-white"
-							th:href="@{/admin}"> <i class="bi bi-speedometer2 me-2"></i>
-								Admin Dashboard
-						</a></li>
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/user}"><i class="bi bi-house-door-fill"></i> Home</a>
+    </div>
+</nav>
 
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
-								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" href="/public/login"><i
-								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
-						<li class="nav-item">
-							<form th:action="@{/logout}" method="post">
-								<button class="btn btn-danger w-100" type="submit">
-									<i class="bi bi-box-arrow-right"></i> Log Out
-								</button>
-							</form>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav>
-
-
-<div class="container mt-5">
+<div class="container mt-5 pt-5">
     <div class="row justify-content-center align-items-center">
         <!-- Lottie Animation -->
-        <div class="col-md-6 lottie-box">
+        <div class="col-md-6 d-none d-md-block text-center">
             <lottie-player
                 src="https://assets4.lottiefiles.com/packages/lf20_gjmecwii.json"
                 background="transparent"
                 speed="1"
                 style="width: 100%; max-width: 400px; height: auto;"
-                loop
-                autoplay>
+                loop autoplay>
             </lottie-player>
         </div>
 
         <!-- Registration Form -->
         <div class="col-md-6">
-            <div class="card shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+            <div class="card shadow-lg border-0">
                 <div class="card-body">
-                    <h2 class="card-title text-center mb-4">User Registration</h2>
-                    <form id="registration-form" method="post" th:action="@{/public/register}">
+                    <h3 class="card-title text-center mb-4">Register New User</h3>
+                         <form th:action="@{/public/signup}" th:object="${user}" method="post">
+                        <!-- Username -->
                         <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
-                            <div class="error-message" id="username-error">Username is required</div>
+                            <label class="form-label">Username</label>
+                            <input type="text" th:field="*{username}" class="form-control" placeholder="Enter username" />
+                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
                         </div>
+
+                        <!-- Password -->
                         <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
-                            <div class="error-message" id="password-error">Password is required</div>
+                            <label class="form-label">Password</label>
+                            <input type="password" th:field="*{password}" class="form-control" placeholder="Enter password" />
+                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                         </div>
+
+                        <!-- Email -->
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" required>
-                            <div class="error-message" id="email-error">Please enter a valid email</div>
+                            <label class="form-label">Email</label>
+                            <input type="email" th:field="*{email}" class="form-control" placeholder="Enter email" />
+                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </div>
+
+                        <!-- Phone Number -->
                         <div class="mb-3">
-                            <label for="phoneNumber" class="form-label">Phone Number <i class="bi bi-telephone-fill"></i></label>
-                            <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter 10-digit mobile number">
+                            <label class="form-label">Phone Number</label>
+                            <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="Enter 10-digit phone number" />
+                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
                         </div>
-                        <div class="d-grid">
+
+                        <!-- Submit Button -->
+                        <div class="d-grid mb-3">
                             <button type="submit" class="btn btn-primary">Register</button>
                         </div>
                     </form>
+
+                    <!-- Links -->
+                    <div class="text-center mt-3">
+                        <p>Already registered? <a th:href="@{/public/login}">Log in</a></p>
+                        <p><a th:href="@{/}" class="btn btn-link"><i class="bi bi-arrow-left-circle"></i> Back to Home</a></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Links Below -->
-    <div class="row justify-content-center mt-3">
-        <div class="col-md-6 text-center">
-            <p>Already registered? <a th:href="@{/public/login}">Log in</a></p>
-            <p>Want to go back? <a th:href="@{/}" class="back-link" id="back-link"><i class="bi bi-arrow-left-circle-fill"></i> Back to Home</a></p>
         </div>
     </div>
 </div>

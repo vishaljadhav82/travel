@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Offcanvas Navbar</title>
+  <link rel="icon" type="image/png" th:href="@{/img/favicon.png}" />
+  
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap CSS -->
@@ -65,11 +67,6 @@
 								Admin Dashboard
 						</a></li>
 
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
-								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" href="/public/login"><i
-								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
 						<li class="nav-item">
 							<form th:action="@{/logout}" method="post">
 								<button class="btn btn-danger w-100" type="submit">

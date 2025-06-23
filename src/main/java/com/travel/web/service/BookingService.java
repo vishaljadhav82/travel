@@ -36,6 +36,8 @@ public class BookingService {
 	private ScheduleTripRepository scheduleTripRepository;
 	@Autowired
 	private SeatRepository seatRepository;
+	@Autowired
+	private EmailService emailService;
 
 	private RazorpayClient client;
 
@@ -86,6 +88,35 @@ public class BookingService {
 		Booking newBooking = bookingRepository.save(booking);
 		scheduleTrip.getBookings().add(newBooking);
 		scheduleTripRepository.save(scheduleTrip);
+		String toEmail = newBooking.getPassenger().getEmail();
+
+		String subject = "Booking Confirmation - " + newBooking.getBookingId();
+
+		String htmlBody = 
+			    "<html>" +
+			    "<body style='font-family: Arial, sans-serif; color: #333;'>" +
+			    "<h2 style='color: #2E86C1;'>Dear " + newBooking.getPassenger().getFirstName() + " " + newBooking.getPassenger().getLastName() + ",</h2>" +
+			    "<p>Thank you for booking your trip with <strong>TravelWith</strong>! 🚍</p>" +
+			    "<p>Here are your booking details:</p>" +
+			    
+			    "<table style='width: 100%; border-collapse: collapse;'>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Booking ID:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getBookingId() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Passenger Name:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getPassenger().getFirstName() + " " + newBooking.getPassenger().getLastName() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>From:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getFromLocation() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>To:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getDestinationLocation() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Stops:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getStops() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Seat Number:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getSeatNumber() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Total Distance:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getTotalDistance() + " Km</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Amount Paid:</td><td style='padding: 8px; border: 1px solid #ddd;'>₹" + newBooking.getRupeesPaid() + "</td></tr>" +
+			    "  <tr><td style='padding: 8px; border: 1px solid #ddd;'>Status:</td><td style='padding: 8px; border: 1px solid #ddd;'>" + newBooking.getStatus() + "</td></tr>" +
+			    "</table>" +
+
+			    "<p style='margin-top: 20px;'>We look forward to serving you! 🌟</p>" +
+			    "<p>-- <strong>TravelWith Team</strong></p>" +
+			    "</body>" +
+			    "</html>";
+
+		emailService.sendEmail(toEmail, subject, htmlBody);
 		return newBooking;
 
 	}
@@ -95,78 +126,78 @@ public class BookingService {
 	}
 
 	public int checkAvailability(String from, String to, Long id) {
-	    int seatNumber = -1;
-	    String stopString = "";
-	    
-	    ScheduleTrip scheduleTrip = scheduleTripRepository.findById(id).orElse(null);
-	    if (scheduleTrip == null) {
-	        return seatNumber; // No trip found
-	    }
+		int seatNumber = -1;
+		String stopString = "";
 
-	    List<Stop> stopsRoute = scheduleTrip.getRoute().getStops().stream()
-	            .sorted(Comparator.comparing(Stop::getDistanceFromStart))
-	            .toList();
+		ScheduleTrip scheduleTrip = scheduleTripRepository.findById(id).orElse(null);
+		if (scheduleTrip == null) {
+			return seatNumber; // No trip found
+		}
 
-	    // Find indices of from & to stops
-	    int f = -1, l = -1;
-	    for (int i = 0; i < stopsRoute.size(); i++) {
-	        if (stopsRoute.get(i).getStopName().equals(from)) {
-	            f = i;
-	        }
-	        if (stopsRoute.get(i).getStopName().equals(to)) {
-	            l = i;
-	        }
-	    }
+		List<Stop> stopsRoute = scheduleTrip.getRoute().getStops().stream()
+				.sorted(Comparator.comparing(Stop::getDistanceFromStart)).toList();
 
-	    // Validate the stop indices
-	    if (f == -1 || l == -1 || f > l) {
-	        return seatNumber; // Invalid stops
-	    }
+		// Find indices of from & to stops
+		int f = -1, l = -1;
+		for (int i = 0; i < stopsRoute.size(); i++) {
+			if (stopsRoute.get(i).getStopName().equals(from)) {
+				f = i;
+			}
+			if (stopsRoute.get(i).getStopName().equals(to)) {
+				l = i;
+			}
+		}
 
-	    List<String> userStops = new ArrayList<>();
-	    for (int i = f; i <= l; i++) {
-	        userStops.add(stopsRoute.get(i).getStopName());
-	        stopString += stopsRoute.get(i).getStopName() + ",";
-	    }
+		// Validate the stop indices
+		if (f == -1 || l == -1 || f > l) {
+			return seatNumber; // Invalid stops
+		}
 
-	    // Get bus seats
-	    Bus bus = scheduleTrip.getBus();
-	    List<Seat> seats = bus.getBusSeats();
+		List<String> userStops = new ArrayList<>();
+		for (int i = f; i <= l; i++) {
+			userStops.add(stopsRoute.get(i).getStopName());
+			stopString += stopsRoute.get(i).getStopName() + ",";
+		}
 
-	    // Find an available seat
-	    for (Seat seat : seats) {
-	        String currentStops = seat.getStops();
-	        if (currentStops == null || currentStops.isEmpty()) {
-	            // If seat has no assigned stops, allocate it to the user
-	            seat.setStops(stopString);
-	            seatNumber = seat.getSeatNumber();
-	            seatRepository.save(seat);
-	            return seatNumber;
-	        }
+		// Get bus seats
+		Bus bus = scheduleTrip.getBus();
+		List<Seat> seats = bus.getBusSeats();
 
-	        // Split stops and check if there's an overlap
-	        String[] seatStops = currentStops.split(",");
-	        boolean hasOverlap = false;
-	        for (String userStop : userStops) {
-	            for (String stop : seatStops) {
-	                if (stop.equals(userStop)) {
-	                    hasOverlap = true;
-	                    break;
-	                }
-	            }
-	            if (hasOverlap) break;
-	        }
+		// Find an available seat
+		for (Seat seat : seats) {
+			String currentStops = seat.getStops();
+			if (currentStops == null || currentStops.isEmpty()) {
+				// If seat has no assigned stops, allocate it to the user
+				seat.setStops(stopString);
+				seatNumber = seat.getSeatNumber();
+				seatRepository.save(seat);
+				return seatNumber;
+			}
 
-	        // If no overlap, assign the seat
-	        if (!hasOverlap) {
-	            seat.setStops(currentStops + stopString);
-	            seatNumber = seat.getSeatNumber();
-	            seatRepository.save(seat);
-	            return seatNumber;
-	        }
-	    }
+			// Split stops and check if there's an overlap
+			String[] seatStops = currentStops.split(",");
+			boolean hasOverlap = false;
+			for (String userStop : userStops) {
+				for (String stop : seatStops) {
+					if (stop.equals(userStop)) {
+						hasOverlap = true;
+						break;
+					}
+				}
+				if (hasOverlap)
+					break;
+			}
 
-	    return seatNumber; // No available seat found
+			// If no overlap, assign the seat
+			if (!hasOverlap) {
+				seat.setStops(currentStops + stopString);
+				seatNumber = seat.getSeatNumber();
+				seatRepository.save(seat);
+				return seatNumber;
+			}
+		}
+
+		return seatNumber; // No available seat found
 	}
 
 }
