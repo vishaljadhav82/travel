@@ -68,7 +68,7 @@ public class StopController {
     @PostMapping("/add")
     public String addStop(@ModelAttribute Stop stop) {
         stopRepository.save(stop);
-        return "redirect:/stops";
+        return "redirect:/admin/stops";
     }
 
     @GetMapping("/edit/{id}")
@@ -86,12 +86,12 @@ public class StopController {
     public String updateStop(@PathVariable Long id, @ModelAttribute Stop stop) {
         stop.setId(id);
         stopRepository.save(stop);
-        return "redirect:/stops";
+        return "redirect:/admin/stops";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteStop(@PathVariable Long id) {
         stopRepository.deleteById(id);
-        return "redirect:/stops";
+        return "redirect:/admin/stops";
     }
 }

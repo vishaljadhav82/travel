@@ -4,6 +4,7 @@ package com.travel.web.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,8 +31,9 @@ public class Bus {
    
     @Column(nullable = false)
     private int capacity;
-    @OneToMany
-    private List<Seat> busSeats = new ArrayList<Seat>();
+    @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Seat> busSeats = new ArrayList<>();
+
     @Transient
     private int totalSeats;
     

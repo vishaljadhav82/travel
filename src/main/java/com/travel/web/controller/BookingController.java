@@ -62,60 +62,77 @@ public class BookingController {
                 return "book/book-form";  // The name of your Thymeleaf HTML file
     }
 
-    @PostMapping(value="/save",produces = "application/json")
+    @PostMapping(value="/save", produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> saveBooking(@RequestBody BookingCriteria bookingCriteria) throws Exception {
-        // Save the booking to the database
-        // Add your booking saving logic here
-    	System.out.println(bookingCriteria.toString());
-    	double cost = 0;
-    	double preDistance = 0;
-    	double distance = 0;
-    	double startDistance = 0;
-    	double currentDistance = 0;
-    	double time = 0;
-    	int index = -1;
-    	int dindex = -1;
-    	System.out.println("1");
-    ScheduleTrip myTrip =	scheduleTripService.getTripById(bookingCriteria.getTripId());
-    	double costPK = myTrip.getCostPerKm();
-    	System.out.println("Here 2");
-    	
-    	
-      System.out.println(bookingCriteria.toString());
-    List<Stop> stops =  scheduleTripService.getTripById(bookingCriteria.getTripId()).getRoute().getStops().stream().sorted(Comparator.comparing(Stop::getDistanceFromStart)).toList();
-            for (int i = 0; i < stops.size(); i++) {
-				if (stops.get(i).getStopName().equals(bookingCriteria.getFromLocation())) {
-					index = i;
-				}
-				if (stops.get(i).getStopName().equals(bookingCriteria.getDestinationLocation())) {
-					dindex = i;
-					break;
-				}
-			}
 
-            distance = stops.get(dindex).getDistanceFromStart() - stops.get(index).getDistanceFromStart() ;
-            
-            System.out.println("Total Distance: "+distance);
-            cost = distance * 1.2;
-     
-     Booking booking = new Booking();
-     booking.setDestinationLocation(bookingCriteria.getDestinationLocation());
-     booking.setFromLocation(bookingCriteria.getFromLocation());
-     booking.setTripId(bookingCriteria.getTripId());
-     booking.setSeatNumber(1);
-     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    Passenger passenger = passengerService.getPassengerById(bookingCriteria.getPassengerId()).get();
-     
-     booking.setPassenger(passenger);
-     booking.setRupeesPaid(cost);
-     booking.setTotalDistance(distance);
-    int seat = bookingService.checkAvailability(bookingCriteria.getFromLocation(), bookingCriteria.getDestinationLocation(), bookingCriteria.getTripId());
-    booking.setSeatNumber(seat);
-    Booking booked = bookingService.creatBooking(booking,auth.getName());
-	return new ResponseEntity<>(booking,HttpStatus.CREATED);
-     
-         }
+        System.out.println(bookingCriteria.toString());
+        double cost = 0;
+        double distance = 0;
+        int index = -1;
+        int dindex = -1;
+
+        ScheduleTrip myTrip = scheduleTripService.getTripById(bookingCriteria.getTripId());
+        double costPK = myTrip.getCostPerKm();
+
+        List<Stop> stops = myTrip.getRoute().getStops()
+            .stream()
+            .sorted(Comparator.comparing(Stop::getDistanceFromStart))
+            .toList();
+
+        for (int i = 0; i < stops.size(); i++) {
+            if (stops.get(i).getStopName().equals(bookingCriteria.getFromLocation())) {
+                index = i;
+            }
+            if (stops.get(i).getStopName().equals(bookingCriteria.getDestinationLocation())) {
+                dindex = i;
+                break;
+            }
+        }
+
+        if (index == -1 || dindex == -1 || index > dindex) {
+            return new ResponseEntity<>("Invalid from/to location", HttpStatus.BAD_REQUEST);
+        }
+
+        distance = stops.get(dindex).getDistanceFromStart() - stops.get(index).getDistanceFromStart();
+        System.out.println("Total Distance: " + distance);
+        cost = distance * 1.2;
+
+        Booking booking = new Booking();
+        booking.setDestinationLocation(bookingCriteria.getDestinationLocation());
+        booking.setFromLocation(bookingCriteria.getFromLocation());
+        booking.setTripId(bookingCriteria.getTripId());
+
+        Passenger passenger = passengerService.getPassengerById(bookingCriteria.getPassengerId()).orElse(null);
+        if (passenger == null) {
+            return new ResponseEntity<>("Passenger not found", HttpStatus.BAD_REQUEST);
+        }
+
+        booking.setPassenger(passenger);
+        booking.setRupeesPaid(cost);
+        booking.setTotalDistance(distance);
+
+        // Check seat availability
+        int seat = bookingService.checkAvailability(
+            bookingCriteria.getFromLocation(), 
+            bookingCriteria.getDestinationLocation(), 
+            bookingCriteria.getTripId()
+        );
+
+        if (seat == -1) {
+            // No seats available
+            return new ResponseEntity<>("No seats available for this trip", HttpStatus.BAD_REQUEST);
+        }
+
+        booking.setSeatNumber(seat);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        Booking booked = bookingService.creatBooking(booking, auth.getName());
+
+        return new ResponseEntity<>(booked, HttpStatus.CREATED);
+    }
+
      
     @PostMapping("/handle-payment-callback")
     public String confirmPayment(@RequestBody PaymentResponse paymentResponse, Model model) {

@@ -54,7 +54,7 @@
                 tripId: document.getElementById("tripId").value
             };
 
-            fetch('http://13.235.71.15:8080/web-0.0.1-SNAPSHOT/user/booking/save', {
+            fetch('http://localhost:8080/user/booking/save', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bookingData)
@@ -127,14 +127,14 @@
         }
 
         function processPaymentResponse(paymentResponse) {
-            fetch('http://13.235.71.15:8080/web-0.0.1-SNAPSHOT/public/handle-payment-callback', {
+            fetch('http://localhost:8080/public/handle-payment-callback', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(paymentResponse)
             })
             .then(response => response.json())
             .then(data => {
-                window.location.href = "http://13.235.71.15:8080/web-0.0.1-SNAPSHOT/public";
+                window.location.href = "http://localhost:8080/public";
             })
             .catch(console.error);
         }
