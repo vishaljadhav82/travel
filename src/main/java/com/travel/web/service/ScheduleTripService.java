@@ -4,14 +4,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.travel.web.model.Bus;
 import com.travel.web.model.ScheduleTrip;
+import com.travel.web.model.Seat;
 import com.travel.web.model.Stop;
 import com.travel.web.repository.BusRepository;
 import com.travel.web.repository.ScheduleTripRepository;
@@ -52,6 +52,9 @@ public class ScheduleTripService {
             if(tripDetails.getTripEnd() == 1) {
         Bus bus =	busRepository.findById(trip.getId()).get();
             bus.setAvailable(true);
+            for (Seat seat : bus.getBusSeats()) {
+				seat.setStops(null);
+			}
             busRepository.save(bus);
             }
             trip.setAvailableSeats(tripDetails.getAvailableSeats());

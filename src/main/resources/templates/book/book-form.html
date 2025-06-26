@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Book a Trip</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <title>Book a Trip</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<script>
+    <script>
+        // Global Base URL (auto-detects host, works on localhost & production)
+        const BASE_URL = window.location.origin ;
+
         let bookingId_;
 
         function showAllFromLocationOptions() {
@@ -36,7 +35,7 @@
             destinationSelect.innerHTML = "<option value=''>Select Destination Location</option>";
             destinationSelect.disabled = false;
 
-            slicedStops.forEach(function(stop) {
+            slicedStops.forEach(function (stop) {
                 var newOption = document.createElement("option");
                 newOption.value = stop.value;
                 newOption.textContent = stop.textContent;
@@ -54,14 +53,27 @@
                 tripId: document.getElementById("tripId").value
             };
 
-            fetch('http://localhost:8080/user/booking/save', {
+            fetch(`${BASE_URL}/user/booking/save`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(bookingData)
             })
-            .then(response => response.json())
-            .then(data => {
+            .then(async response => {
                 document.getElementById("loader").classList.add("d-none");
+
+                if (!response.ok) {
+                    const errorMessage = await response.text();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Booking Failed',
+                        text: errorMessage
+                    });
+                    throw new Error(errorMessage);
+                }
+
+                return response.json();
+            })
+            .then(data => {
                 bookingId_ = data.id;
 
                 var options = {
@@ -72,7 +84,6 @@
                     description: "Trip Payment",
                     order_id: data.transactionId,
                     receipt: data.passenger.email,
-                   // callback_url: "http://localhost:8080/public/handle-payment-callback",
                     handler: function (response) {
                         var paymentDetails = {
                             bookingId: bookingId_,
@@ -80,7 +91,24 @@
                             paymentId: response.razorpay_payment_id,
                             signatureId: response.razorpay_signature
                         };
-                        createPaymentPopup(paymentDetails);
+
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successful',
+                            html: `
+                                <p><b>Booking ID:</b> ${paymentDetails.bookingId}</p>
+                                <p><b>Order ID:</b> ${paymentDetails.orderId}</p>
+                                <p><b>Payment ID:</b> ${paymentDetails.paymentId}</p>
+                            `,
+                            showCancelButton: true,
+                            confirmButtonText: 'See My Bookings',
+                            cancelButtonText: 'Close'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = `${BASE_URL}/user/booking/my-bookings`;
+                            }
+                        });
+
                         processPaymentResponse(paymentDetails);
                     },
                     prefill: {
@@ -94,161 +122,102 @@
                 new Razorpay(options).open();
             })
             .catch(error => {
+                console.error('Booking Error:', error);
                 document.getElementById("loader").classList.add("d-none");
-                alert(error);
             });
         }
 
-        function createPaymentPopup(paymentDetails) {
-        	processPaymentResponse(paymentDetails);
-            const popup = document.createElement('div');
-            popup.className = 'modal fade';
-            popup.id = 'paymentModal';
-            popup.tabIndex = '-1';
-            popup.innerHTML = `
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title"><i class="bi bi-credit-card"></i> Payment Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <p><i class="bi bi-receipt"></i> <strong>Booking ID:</strong> ${paymentDetails.bookingId}</p>
-                            <p><i class="bi bi-file-earmark-text"></i> <strong>Order ID:</strong> ${paymentDetails.orderId}</p>
-                            <p><i class="bi bi-cash-stack"></i> <strong>Payment ID:</strong> ${paymentDetails.paymentId}</p>
-                            <p><i class="bi bi-shield-check"></i> <strong>Signature ID:</strong> ${paymentDetails.signatureId}</p>
-                            <a href="/user/booking/my-bookings" class="btn btn-link"><i class="bi bi-box-arrow-up-right"></i> See Your Bookings</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(popup);
-            new bootstrap.Modal(popup).show();
-        }
-
         function processPaymentResponse(paymentResponse) {
-            fetch('http://localhost:8080/public/handle-payment-callback', {
+            fetch(`${BASE_URL}/public/handle-payment-callback`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(paymentResponse)
             })
             .then(response => response.json())
             .then(data => {
-                window.location.href = "http://localhost:8080/public";
+                window.location.href = `${BASE_URL}/public`;
             })
             .catch(console.error);
         }
     </script>
 </head>
 <body class="bg-light p-4">
-	<!-- Bootstrap Offcanvas Navbar -->
-	<nav class="navbar navbar-dark bg-dark fixed-top">
-		<div class="container-fluid">
-			<a class="navbar-brand" th:href="@{/user}"><i
-				class="bi bi-house-door-fill"></i> Home</a>
-			<button class="navbar-toggler" type="button"
-				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-				aria-controls="offcanvasNavbar">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1"
-				id="offcanvasNavbar">
-				<div class="offcanvas-header">
-					<h5 class="offcanvas-title">
-						<i class="bi bi-list"></i> Menu
-					</h5>
-					<button type="button" class="btn-close btn-close-white"
-						data-bs-dismiss="offcanvas"></button>
-				</div>
-				<div class="offcanvas-body">
-					<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers}"><i class="bi bi-people"></i>
-								Passengers</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/passengers/form}"><i
-								class="bi bi-person-plus"></i> Add Passenger</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public}"><i class="bi bi-search"></i> Trip
-								Search</a></li>
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/user/booking/my-bookings}"><i
-								class="bi bi-journal-bookmark"></i> My Bookings</a></li>
-						<li class="nav-item"><a class="nav-link text-white"
-							th:href="@{/admin}"> <i class="bi bi-speedometer2 me-2"></i>
-								Admin Dashboard
-						</a></li>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/user}"><i class="bi bi-house-door-fill"></i> Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title"><i class="bi bi-list"></i> Menu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/user/passengers}"><i class="bi bi-people"></i> Passengers</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/user/passengers/form}"><i class="bi bi-person-plus"></i> Add Passenger</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/public}"><i class="bi bi-search"></i> Trip Search</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/user/booking/my-bookings}"><i class="bi bi-journal-bookmark"></i> My Bookings</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" th:href="@{/admin}"><i class="bi bi-speedometer2 me-2"></i> Admin Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/public/signup}"><i class="bi bi-person-add"></i> Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link" th:href="@{/public/login}"><i class="bi bi-box-arrow-in-right"></i> Log In</a></li>
+                        <li class="nav-item">
+                            <form th:action="@{/logout}" method="post">
+                                <button class="btn btn-danger w-100" type="submit">
+                                    <i class="bi bi-box-arrow-right"></i> Log Out
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-						<li class="nav-item"><a class="nav-link"
-							th:href="@{/public/signup}"><i class="bi bi-person-add"></i>
-								Sign Up</a></li>
-						<li class="nav-item"><a class="nav-link" th:href="@{/public/login}"><i
-								class="bi bi-box-arrow-in-right"></i> Log In</a></li>
-						<li class="nav-item">
-							<form th:action="@{/logout}" method="post">
-								<button class="btn btn-danger w-100" type="submit">
-									<i class="bi bi-box-arrow-right"></i> Log Out
-								</button>
-							</form>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav>
+    <div class="container mt-5 pt-5">
+        <h2 class="mb-4"><i class="bi bi-truck"></i> Book a Trip</h2>
+        <div id="loader" class="d-none position-absolute top-50 start-50 translate-middle">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
 
-	<div class="container mt-5 pt-5">
-		<h2 class="mb-4">
-			<i class="bi bi-truck"></i> Book a Trip
-		</h2>
-		<div id="loader"
-			class="d-none position-absolute top-50 start-50 translate-middle">
-			<div class="spinner-border text-primary" role="status">
-				<span class="visually-hidden">Loading...</span>
-			</div>
-		</div>
+        <form id="bookingForm" class="border p-4 rounded bg-white shadow">
+            <input type="hidden" id="tripId" name="tripId" th:value="${tripId}">
 
-		<form id="bookingForm" class="border p-4 rounded bg-white shadow">
-			<input type="hidden" id="tripId" name="tripId" th:value="${tripId}">
+            <div class="mb-3">
+                <label for="fromLocation" class="form-label"><i class="bi bi-geo-alt"></i> From Location</label>
+                <select id="fromLocation" name="fromLocation" class="form-select" required onchange="showAllFromLocationOptions()">
+                    <option value="">Select From Location</option>
+                    <th:block th:each="stop : ${stops}">
+                        <option th:value="${stop.stopName}" th:text="${stop.stopName}"></option>
+                    </th:block>
+                </select>
+            </div>
 
-			<div class="mb-3">
-				<label for="fromLocation" class="form-label"><i
-					class="bi bi-geo-alt"></i> From Location</label> <select id="fromLocation"
-					name="fromLocation" class="form-select" required
-					onchange="showAllFromLocationOptions()">
-					<option value="">Select From Location</option>
-					<th:block th:each="stop : ${stops}">
-						<option th:value="${stop.stopName}" th:text="${stop.stopName}"></option>
-					</th:block>
-				</select>
-			</div>
+            <div class="mb-3">
+                <label for="destinationLocation" class="form-label"><i class="bi bi-flag"></i> Destination Location</label>
+                <select id="destinationLocation" name="destinationLocation" class="form-select" required disabled>
+                    <option value="">Select Destination Location</option>
+                </select>
+            </div>
 
-			<div class="mb-3">
-				<label for="destinationLocation" class="form-label"><i
-					class="bi bi-flag"></i> Destination Location</label> <select
-					id="destinationLocation" name="destinationLocation"
-					class="form-select" required disabled>
-					<option value="">Select Destination Location</option>
-				</select>
-			</div>
+            <div class="mb-3">
+                <label for="passengerId" class="form-label"><i class="bi bi-person"></i> Passenger</label>
+                <select id="passengerId" name="passengerId" class="form-select" required>
+                    <option value="">Select Passenger</option>
+                    <th:block th:each="passenger : ${passenger}">
+                        <option th:value="${passenger.id}" th:text="${passenger.firstName}"></option>
+                    </th:block>
+                </select>
+            </div>
 
-			<div class="mb-3">
-				<label for="passengerId" class="form-label"><i
-					class="bi bi-person"></i> Passenger</label> <select id="passengerId"
-					name="passengerId" class="form-select" required>
-					<option value="">Select Passenger</option>
-					<th:block th:each="passenger : ${passenger}">
-						<option th:value="${passenger.id}"
-							th:text="${passenger.firstName}"></option>
-					</th:block>
-				</select>
-			</div>
-
-			<button type="button" class="btn btn-primary"
-				onclick="submitBooking()">
-				<i class="bi bi-cart-plus"></i> Book Trip
-			</button>
-		</form>
-	</div>
+            <button type="button" class="btn btn-primary" onclick="submitBooking()">
+                <i class="bi bi-cart-plus"></i> Book Trip
+            </button>
+        </form>
+    </div>
 </body>
 </html>
